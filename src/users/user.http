@@ -1,0 +1,30 @@
+### Create user
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+	"username": "s0t12",
+    "name": "arta",
+    "role": "admin"
+}
+
+
+### Get users
+GET http://localhost:3000/users
+
+
+### Get by id
+GET http://localhost:3000/users/1
+
+
+### Update user
+PATCH http://localhost:3000/users/1
+Content-Type: application/json
+
+{
+    "name": "s0t12",
+    "role": "admin"
+}
+
+### Remove user
+DELETE http://localhost:3000/users/1

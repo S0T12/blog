@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { PostEntity } from '../../posts/entities/post.entity';
 
 enum roles {
   ADMIN = 'admin',
@@ -18,4 +25,10 @@ export class UserEntity {
 
   @Column()
   role: roles;
+
+  @OneToMany(() => PostEntity, (post) => post.author)
+  posts: PostEntity[];
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

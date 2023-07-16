@@ -1,0 +1,31 @@
+### Create post
+POST http://localhost:3000/posts
+Content-Type: application/json
+
+{
+    "title": "title",
+    "text": "text",
+    "authorId": 1
+}
+
+
+### Get posts
+GET http://localhost:3000/posts
+
+
+### Get by id
+GET http://localhost:3000/posts/1
+
+
+### Update post
+PATCH http://localhost:3000/posts/1
+Content-Type: application/json
+
+{
+    "title": "updateTitle",
+    "text": "udateText"
+}
+
+
+### Remove post
+DELETE http://localhost:3000/posts/10

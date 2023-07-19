@@ -16,11 +16,14 @@ export class UsersService {
   }
 
   findAll() {
-    return this._userRepository.find();
+    return this._userRepository.find({ relations: ['posts'] });
   }
 
   findOne(id: number) {
-    return this._userRepository.findOne({ where: { id } });
+    return this._userRepository.findOne({
+      where: { id },
+      relations: ['posts'],
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

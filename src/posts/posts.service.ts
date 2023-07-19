@@ -4,16 +4,24 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostEntity } from './entities/post.entity';
 import { Repository } from 'typeorm';
+import { UserEntity } from '../users/entities/user.entity';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(PostEntity)
     private readonly _postEntity: Repository<PostEntity>,
+    @InjectRepository(UserEntity)
+    private readonly _userRepository: Repository<UserEntity>,
   ) {}
-  create(createPostDto: CreatePostDto) {
-    console.log('createPostDtoService', CreatePostDto);
-    return this._postEntity.save(createPostDto);
+
+  async create(createPostDto: CreatePostDto) {
+    const post = this._postEntity.create(createPostDto);
+    const user = await this._userRepository.findOne({
+      where: { id: createPostDto.author },
+    });
+    post.author = user.id;
+    return this._postEntity.save(post);
   }
 
   findAll() {

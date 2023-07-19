@@ -19,7 +19,7 @@ export class PostEntity {
   text: string;
 
   @ManyToOne(() => UserEntity, (user) => user.posts)
-  author: UserEntity;
+  author: number;
 
   @CreateDateColumn()
   createdAt: Date;

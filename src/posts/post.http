@@ -5,7 +5,7 @@ Content-Type: application/json
 {
     "title": "title",
     "text": "text",
-    "authorId": 1
+    "author": 6
 }
 
 
@@ -28,4 +28,4 @@ Content-Type: application/json
 
 
 ### Remove post
-DELETE http://localhost:3000/posts/10
+DELETE http://localhost:3000/posts/27

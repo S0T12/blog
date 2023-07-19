@@ -1,4 +1,21 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { UserEntity } from '../entities/user.entity';
+import { IsArray, IsString } from 'class-validator';
+import { PostEntity } from '../../posts/entities/post.entity';
 
-export class CreateUserDto extends PartialType(UserEntity) {}
+enum roles {
+  ADMIN = 'admin',
+  USER = 'user',
+}
+
+export class CreateUserDto {
+  @IsString()
+  username: string;
+
+  @IsString()
+  name: string;
+
+  @IsString()
+  role: roles;
+
+  @IsArray()
+  posts: PostEntity[];
+}

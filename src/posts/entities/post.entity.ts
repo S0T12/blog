@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
+import { CategoryEntity } from '../../categories/entities/category.entity';
 
 @Entity('posts')
 export class PostEntity {
@@ -19,7 +20,10 @@ export class PostEntity {
   text: string;
 
   @ManyToOne(() => UserEntity, (user) => user.posts)
-  author: number;
+  author: UserEntity;
+
+  @ManyToOne(() => CategoryEntity, (category) => category.post)
+  category: CategoryEntity;
 
   @CreateDateColumn()
   createdAt: Date;

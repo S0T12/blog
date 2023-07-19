@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsString } from 'class-validator';
 
 export class CreatePostDto {
   @IsString()
@@ -9,4 +9,7 @@ export class CreatePostDto {
 
   @IsNumber()
   author: number;
+
+  @IsArray()
+  category: [];
 }

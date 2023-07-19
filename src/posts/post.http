@@ -3,9 +3,10 @@ POST http://localhost:3000/posts
 Content-Type: application/json
 
 {
-    "title": "title",
+    "title": "nestBlog",
     "text": "text",
-    "author": 6
+    "author": 6,
+    "category": ["nest"]
 }
 
 

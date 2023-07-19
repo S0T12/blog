@@ -1,0 +1,27 @@
+### Create category
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "name": "nest"
+}
+
+
+### Get categories
+GET http://localhost:3000/categories
+
+
+### Get by id
+GET http://localhost:3000/categories/1
+
+
+### Update category
+PATCH http://localhost:3000/categories/1
+Content-Type: application/json
+
+{
+    "name": "newNest"
+}
+
+### Delete category
+DELETE http://localhost:3000/categories/

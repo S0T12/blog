@@ -4,16 +4,15 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostEntity } from './entities/post.entity';
 import { DeepPartial, Repository } from 'typeorm';
-import { UserEntity } from '../users/entities/user.entity';
 import { CategoryEntity } from '../categories/entities/category.entity';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(PostEntity)
     private readonly _postEntity: Repository<PostEntity>,
-    @InjectRepository(UserEntity)
-    private readonly _userRepository: Repository<UserEntity>,
+    private readonly _usersService: UsersService,
     @InjectRepository(CategoryEntity)
     private readonly _categoryRepository: Repository<CategoryEntity>,
   ) {}
@@ -25,9 +24,7 @@ export class PostsService {
 
     const { author, category } = createPostDto;
 
-    const user = await this._userRepository.findOne({
-      where: { id: createPostDto.author },
-    });
+    const user = await this._usersService.findOne(createPostDto.author);
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -46,7 +43,7 @@ export class PostsService {
   }
 
   findAll() {
-    return this._postEntity.find();
+    return this._postEntity.find({ relations: ['category'] });
   }
 
   findOne(id: number) {

@@ -6,19 +6,26 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  ConflictException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserExistsGuard } from './guards/user-exists.guard';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    console.log('createUserDto >>>>', createUserDto);
-    return this.usersService.create(createUserDto);
+  @UseGuards(UserExistsGuard)
+  async create(@Body() createUserDto: CreateUserDto) {
+    try {
+      return await this.usersService.create(createUserDto);
+    } catch (error) {
+      throw new ConflictException('Username already exists');
+    }
   }
 
   @Get()

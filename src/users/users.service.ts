@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UsersService {
@@ -11,8 +12,10 @@ export class UsersService {
     @InjectRepository(UserEntity)
     private readonly _userRepository: Repository<UserEntity>,
   ) {}
+
   create(createUserDto: CreateUserDto) {
-    return this._userRepository.save(createUserDto);
+    const user = plainToClass(UserEntity, createUserDto);
+    return this._userRepository.save(user);
   }
 
   findAll() {
@@ -27,7 +30,8 @@ export class UsersService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return this._userRepository.update(id, updateUserDto);
+    const updatedUser = plainToClass(UserEntity, updateUserDto);
+    return this._userRepository.update({ id }, updatedUser);
   }
 
   remove(id: number) {
@@ -40,5 +44,9 @@ export class UsersService {
       return true;
     }
     return false;
+  }
+
+  getUserByUsername(username: string) {
+    return this._userRepository.findOne({ where: { username } });
   }
 }

@@ -1,10 +1,6 @@
 import { IsArray, IsString } from 'class-validator';
 import { PostEntity } from '../../posts/entities/post.entity';
-
-enum roles {
-  ADMIN = 'admin',
-  USER = 'user',
-}
+import { IsRole } from '../validators/role.validator';
 
 export class CreateUserDto {
   @IsString()
@@ -13,8 +9,8 @@ export class CreateUserDto {
   @IsString()
   name: string;
 
-  @IsString()
-  role: roles;
+  @IsRole({ message: 'Role must be either "user" or "admin"' })
+  role: string;
 
   @IsArray()
   posts: PostEntity[];

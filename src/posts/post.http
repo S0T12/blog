@@ -5,7 +5,7 @@ Content-Type: application/json
 {
     "title": "nestBlog",
     "text": "text",
-    "author": 1,
+    "author": 6,
     "category": ["nest"]
 }
 

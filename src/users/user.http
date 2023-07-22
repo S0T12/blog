@@ -3,7 +3,7 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-	"username": "user",
+	"username": "user123",
     "name": "user",
     "role": "user",
     "posts": []
@@ -28,4 +28,4 @@ Content-Type: application/json
 }
 
 ### Remove user
-DELETE http://localhost:3000/users/1
+DELETE http://localhost:3000/users/14

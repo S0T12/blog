@@ -19,7 +19,6 @@ import { CategoriesModule } from './categories/categories.module';
       database: process.env.DATABASE,
       synchronize: true,
       autoLoadEntities: true,
-      logging: true,
     }),
     UsersModule,
     PostsModule,

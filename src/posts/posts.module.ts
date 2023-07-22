@@ -7,6 +7,7 @@ import { UsersService } from '../users/users.service';
 import { CategoryEntity } from '../categories/entities/category.entity';
 import { UsersModule } from '../users/users.module';
 import { UserEntity } from '../users/entities/user.entity';
+import { AdminGuard } from './guards/admin.guard';
 
 @Module({
   imports: [
@@ -14,6 +15,6 @@ import { UserEntity } from '../users/entities/user.entity';
     UsersModule,
   ],
   controllers: [PostsController],
-  providers: [PostsService, UsersService],
+  providers: [PostsService, UsersService, AdminGuard],
 })
 export class PostsModule {}

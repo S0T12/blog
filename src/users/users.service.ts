@@ -33,4 +33,12 @@ export class UsersService {
   remove(id: number) {
     return this._userRepository.delete(id);
   }
+
+  async checkIfUserIsAdmin(author: number): Promise<boolean> {
+    const user = await this.findOne(author);
+    if (user && user.role === 'admin') {
+      return true;
+    }
+    return false;
+  }
 }

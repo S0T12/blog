@@ -3,9 +3,10 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-	"username": "s0t12",
-    "name": "arta",
-    "role": "admin"
+	"username": "user",
+    "name": "user",
+    "role": "user",
+    "posts": []
 }
 
 

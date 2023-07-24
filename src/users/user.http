@@ -12,14 +12,14 @@ Content-Type: application/json
 
 ### Get users
 GET http://localhost:3000/users
-
+    
 
 ### Get by id
 GET http://localhost:3000/users/6
 
 
 ### Update user
-PATCH http://localhost:3000/users/1
+PATCH http://localhost:3000/users/6
 Content-Type: application/json
 
 {

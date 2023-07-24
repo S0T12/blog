@@ -29,4 +29,4 @@ Content-Type: application/json
 
 
 ### Remove post
-DELETE http://localhost:3000/posts/27
+DELETE http://localhost:3000/posts/1

@@ -7,11 +7,6 @@ import {
 } from 'typeorm';
 import { PostEntity } from '../../posts/entities/post.entity';
 
-enum roles {
-  ADMIN = 'admin',
-  USER = 'user',
-}
-
 @Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn()
@@ -24,7 +19,7 @@ export class UserEntity {
   name: string;
 
   @Column()
-  role: roles;
+  role: string;
 
   @OneToMany(() => PostEntity, (post) => post.author)
   posts: PostEntity[];

@@ -22,7 +22,9 @@ export class PostEntity {
   @ManyToOne(() => UserEntity, (user) => user.posts)
   author: UserEntity;
 
-  @ManyToOne(() => CategoryEntity, (category) => category.post)
+  @ManyToOne(() => CategoryEntity, (category) => category.post, {
+    onDelete: 'CASCADE',
+  })
   category: CategoryEntity;
 
   @CreateDateColumn()

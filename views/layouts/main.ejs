@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S0T12 - Categories</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+
+    header {
+      background-color: #333;
+      padding: 20px;
+      text-align: center;
+      color: #fff;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    li:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      color: #333;
+      text-decoration: none;
+      background-color: #eee;
+      padding: 10px 20px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    a:hover {
+      background-color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>S0T12</h1>
+    <p>Welcome to the S0T12 Page</p>
+  </header>
+  <main>
+    <h2>Categories</h2>
+    <ul>
+      <% categories.forEach(category => { %>
+        <li><a href="/categories/<%= category.id %>"><%= category.name %></a></li>
+      <% }) %>
+    </ul>  
+  </main>
+  <footer>
+  </footer>
+</body>
+</html>

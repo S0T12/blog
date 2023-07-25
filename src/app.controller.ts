@@ -11,8 +11,20 @@ export class AppController {
 
   @Get()
   @Render('layouts/main')
-  async getCategories() {
+  async getMain() {
     const categories = await this.categoriesService.findAll();
     return { categories };
+  }
+
+  @Get('/about')
+  @Render('about/about')
+  async getAbout() {
+    console.log('hello about');
+  }
+
+  @Get('/projects')
+  @Render('projects/project')
+  async getProject() {
+    console.log('hello world');
   }
 }

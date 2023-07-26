@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="images/icon.png">
+  <title>S0T12 - About</title>
+  <link href="https://fonts.googleapis.com/css2?family=Hack&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Hack', monospace;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+
+    header {
+      background-color: #333;
+      padding: 20px;
+      text-align: center;
+      color: #fff;
+    }
+
+    main {
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 40px;
+      background-color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    p {
+      margin-bottom: 20px;
+    }
+
+    .stats-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .stats {
+      display: flex;
+      align-items: center;
+      border: none;
+      margin-bottom: 10px;
+    }
+
+    .stats img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      outline: none;
+      cursor: pointer;
+      box-shadow: none;
+      border: none;
+    }
+
+    .stats p {
+      margin: 0;
+    }
+
+    .back-button {
+      color: #333;
+      text-decoration: none;
+      background-color: #eee;
+      padding: 10px 20px;
+      border-radius: 5px;
+      transition: background-color 0.1s;
+      font-size: 14px;
+    }
+
+    .back-button:hover {
+      background-color: #ccc;
+    }
+
+    img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .back-button {
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>S0T12</h1>
+    <p>Hi</p>
+  </header>
+  <main>
+    <h2>About Me</h2>
+    <p>As a backend developer with expertise in node.js and frameworks like <b>NestJS</b> and Express, I have a strong passion for creating efficient and scalable applications. I have experience working with various databases such as <b>PostgreSQL</b>, <b>MongoDB</b>, and MySQL, and I am proficient in using database ORM tools like <b>TypeORM</b>. Additionally, I am comfortable working with <b>Linux</b> environments and using <b>Git</b> for version control.</p>
+    <div class="stats-container">
+      <div class="stats">
+        <a href="https://github.com/s0t12" target="_blank">
+          <img src="/images/github.png" alt="GitHub">
+        </a>
+        <a href="https://t.me/s0t12" target="_blank">
+          <img src="/images/telegram.png" alt="Telegram">
+        </a>
+      </div>
+    </div>
+    <img src="https://camo.githubusercontent.com/c78c3f1a92d407f81d549016cf20ad3ad721aa87aeb2b6653cbe828b9ca0327f/68747470733a2f2f6769746875622d726561646d652d73746174732e76657263656c2e6170702f6170693f757365726e616d653d7330743132267468656d653d6461726b26686964655f626f726465723d66616c736526696e636c7564655f616c6c5f636f6d6d6974733d66616c736526636f756e745f707269766174653d66616c7365" alt="GitHub Stats">
+    <br>
+    <button class="back-button" onclick="window.location.href='http://localhost:3000'">Back</button>
+  </main>
+  <footer>
+  </footer>
+</body>
+</html>

@@ -19,12 +19,12 @@ export class AppController {
   @Get('/about')
   @Render('about/about')
   async getAbout() {
-    console.log('hello about');
+    console.log('about');
   }
 
   @Get('/projects')
   @Render('projects/project')
   async getProject() {
-    console.log('hello world');
+    console.log('projects');
   }
 }

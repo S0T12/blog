@@ -3,10 +3,10 @@ POST http://localhost:3000/posts
 Content-Type: application/json
 
 {
-    "title": "nestBlog",
-    "text": "text",
+    "title": "chatApp",
+    "text": "s0t12",
     "author": 6,
-    "category": ["nest"]
+    "category": ["Projects"]
 }
 
 
@@ -30,3 +30,7 @@ Content-Type: application/json
 
 ### Remove post
 DELETE http://localhost:3000/posts/1
+
+
+### Get by category
+GET http://localhost:3000/posts/category/Projects

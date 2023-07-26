@@ -57,4 +57,19 @@ export class PostsService {
   remove(id: number) {
     return this._postEntity.delete(id);
   }
+
+  async findByCategory(category: string) {
+    const categoryEntity = await this._categoryRepository.findOne({
+      where: { name: category },
+    });
+
+    if (!categoryEntity) {
+      throw new NotFoundException('Category not found');
+    }
+
+    return this._postEntity.find({
+      where: { category: categoryEntity },
+      relations: ['category'],
+    });
+  }
 }

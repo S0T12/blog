@@ -16,5 +16,6 @@ import { AdminGuard } from './guards/admin.guard';
   ],
   controllers: [PostsController],
   providers: [PostsService, UsersService, AdminGuard],
+  exports: [PostsService],
 })
 export class PostsModule {}

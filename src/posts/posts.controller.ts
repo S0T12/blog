@@ -20,7 +20,6 @@ export class PostsController {
   @UseGuards(AdminGuard)
   @Post()
   create(@Body() createPostDto: CreatePostDto) {
-    console.log('createPostDto', createPostDto);
     return this._postsService.create(createPostDto);
   }
 
@@ -42,5 +41,10 @@ export class PostsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this._postsService.remove(+id);
+  }
+
+  @Get('category/:category')
+  findByCategory(@Param('category') category: string) {
+    return this._postsService.findByCategory(category);
   }
 }

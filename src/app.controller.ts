@@ -1,18 +1,20 @@
 import { Controller, Get, Render } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CategoriesService } from './categories/categories.service';
+import { PostsService } from './posts/posts.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly categoriesService: CategoriesService,
+    private readonly _categoriesService: CategoriesService,
+    private readonly _postsService: PostsService,
   ) {}
 
   @Get()
   @Render('layouts/main')
   async getMain() {
-    const categories = await this.categoriesService.findAll();
+    const categories = await this._categoriesService.findAll();
     return { categories };
   }
 
@@ -23,8 +25,15 @@ export class AppController {
   }
 
   @Get('/projects')
+  @Render('projects/list')
+  async getList() {
+    const projects = await this._postsService.findByCategory('Projects');
+    return { projects };
+  }
+
+  @Get('projects/:id')
   @Render('projects/project')
-  async getProject() {
-    console.log('projects');
+  async GetPorject() {
+    console.log('nothing!');
   }
 }

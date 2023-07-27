@@ -3,8 +3,8 @@ POST http://localhost:3000/posts
 Content-Type: application/json
 
 {
-    "title": "chatApp",
-    "text": "s0t12",
+    "title": "s0t12",
+    "text": "hello world",
     "author": 6,
     "category": ["Projects"]
 }
@@ -23,8 +23,8 @@ PATCH http://localhost:3000/posts/1
 Content-Type: application/json
 
 {
-    "title": "updateTitle",
-    "text": "udateText"
+    "title": "chatApp",
+    "text": "chatApp"
 }
 
 

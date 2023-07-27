@@ -1,4 +1,4 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, Param, Render } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CategoriesService } from './categories/categories.service';
 import { PostsService } from './posts/posts.service';
@@ -33,7 +33,8 @@ export class AppController {
 
   @Get('projects/:id')
   @Render('projects/project')
-  async GetPorject() {
-    console.log('nothing!');
+  async GetPorject(@Param('id') id: number) {
+    const project = await this._postsService.findOne(id);
+    return { project };
   }
 }

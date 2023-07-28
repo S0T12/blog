@@ -3,10 +3,15 @@ POST http://localhost:3000/posts
 Content-Type: application/json
 
 {
-    "title": "s0t12",
+    "title": "HELLO WORLD",
     "text": "hello world",
     "author": 6,
-    "category": ["Projects"]
+    "category": ["Projects"],
+    "code": "console.log('Hello World!');",
+    "images": [
+    "https://image1.jpg",
+    "https://image2.jpg"
+    ]
 }
 
 

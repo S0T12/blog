@@ -22,6 +22,12 @@ export class PostEntity {
   @ManyToOne(() => UserEntity, (user) => user.posts)
   author: UserEntity;
 
+  @Column({ type: 'text', nullable: true })
+  code: string;
+
+  @Column('simple-array', { nullable: true })
+  images: string[];
+
   @ManyToOne(() => CategoryEntity, (category) => category.post, {
     onDelete: 'CASCADE',
   })

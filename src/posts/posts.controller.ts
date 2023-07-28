@@ -30,7 +30,10 @@ export class PostsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this._postsService.findOne(+id);
+    const post = this._postsService.findOne(+id);
+    return {
+      project: post,
+    };
   }
 
   @Patch(':id')

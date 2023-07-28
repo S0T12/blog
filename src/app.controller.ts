@@ -1,7 +1,16 @@
-import { Controller, Get, Param, Render } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Render,
+  Res,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { CategoriesService } from './categories/categories.service';
 import { PostsService } from './posts/posts.service';
+import { CreatePostDto } from './posts/dto/create-post.dto';
 
 @Controller()
 export class AppController {
@@ -36,5 +45,11 @@ export class AppController {
   async GetPorject(@Param('id') id: number) {
     const project = await this._postsService.findOne(id);
     return { project };
+  }
+
+  @Get('/create')
+  @Render('projects/create')
+  async handleCreate() {
+    return {};
   }
 }

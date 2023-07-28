@@ -11,6 +11,7 @@ export class CategoriesService {
     @InjectRepository(CategoryEntity)
     private readonly _categoryRepository: Repository<CategoryEntity>,
   ) {}
+
   create(createCategoryDto: CreateCategoryDto) {
     return this._categoryRepository.save(createCategoryDto);
   }
@@ -21,6 +22,10 @@ export class CategoriesService {
 
   findOne(id: number) {
     return this._categoryRepository.findOne({ where: { id } });
+  }
+
+  findOneByName(name: string) {
+    return this._categoryRepository.findOne({ where: { name } });
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {

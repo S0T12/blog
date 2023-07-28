@@ -4,8 +4,8 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostEntity } from './entities/post.entity';
 import { DeepPartial, Repository } from 'typeorm';
-import { CategoryEntity } from '../categories/entities/category.entity';
 import { UsersService } from '../users/users.service';
+import { CategoriesService } from '../categories/categories.service';
 
 @Injectable()
 export class PostsService {
@@ -13,8 +13,7 @@ export class PostsService {
     @InjectRepository(PostEntity)
     private readonly _postEntity: Repository<PostEntity>,
     private readonly _usersService: UsersService,
-    @InjectRepository(CategoryEntity)
-    private readonly _categoryRepository: Repository<CategoryEntity>,
+    private readonly _categoriesService: CategoriesService,
   ) {}
 
   async create(createPostDto: CreatePostDto) {
@@ -30,9 +29,9 @@ export class PostsService {
     }
     post.author = user;
 
-    const categoryEntity = await this._categoryRepository.findOne({
-      where: { name: category.toString() },
-    });
+    const categoryEntity = await this._categoriesService.findOneByName(
+      category.toString(),
+    );
 
     if (!categoryEntity) {
       throw new NotFoundException('Category not found');
@@ -43,15 +42,39 @@ export class PostsService {
   }
 
   findAll() {
-    return this._postEntity.find({ relations: ['category'] });
+    return this._postEntity.find({ relations: ['author', 'category'] });
   }
 
   findOne(id: number) {
-    return this._postEntity.findOne({ where: { id } });
+    return this._postEntity.findOne({
+      where: { id },
+      relations: ['author', 'category'],
+    });
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return this._postEntity.update(id, updatePostDto);
+  async update(id: number, updatePostDto: UpdatePostDto) {
+    const post = await this._postEntity
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.author', 'author')
+      .where('post.id = :id', { id })
+      .getOne();
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    const { author, ...partialPost } = updatePostDto;
+    if (author) {
+      const user = await this._usersService.findOne(author);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      post.author = user;
+    }
+
+    Object.assign(post, partialPost);
+
+    return this._postEntity.save(post);
   }
 
   remove(id: number) {
@@ -59,17 +82,18 @@ export class PostsService {
   }
 
   async findByCategory(category: string) {
-    const categoryEntity = await this._categoryRepository.findOne({
-      where: { name: category },
-    });
+    const categoryEntity = await this._categoriesService.findOneByName(
+      category,
+    );
 
     if (!categoryEntity) {
       throw new NotFoundException('Category not found');
     }
 
-    return this._postEntity.find({
-      where: { category: categoryEntity },
-      relations: ['category'],
-    });
+    return this._postEntity
+      .createQueryBuilder('post')
+      .innerJoin('post.category', 'category')
+      .where('category.id = :categoryId', { categoryId: categoryEntity.id })
+      .getMany();
   }
 }

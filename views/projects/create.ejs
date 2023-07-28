@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Post</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    form {
+      width: 400px;
+      margin: 0 auto;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+    }
+    textarea {
+      height: 150px;
+    }
+    button[type="submit"] {
+      background-color: #333;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    button[type="submit"]:hover {
+      background-color: #555;
+    }
+    .error-message {
+      color: red;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Create Post</h1>
+  <form id="createPostForm">
+    <div>
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required>
+    </div>
+    <div>
+      <label for="text">Text:</label>
+      <textarea id="text" name="text" required></textarea>
+    </div>
+    <div>
+      <label for="author">Author:</label>
+      <input type="number" id="author" name="author" required>
+    </div>
+    <div>
+      <label for="category">Category:</label>
+      <input type="text" id="category" name="category" required>
+    </div>
+    <div>
+      <label for="code">Code:</label>
+      <textarea id="code" name="code"></textarea>
+    </div>
+    <div>
+      <label for="images">Images:</label>
+      <input type="text" id="images" name="images" required>
+    </div>
+    <div>
+      <button type="submit">Create</button>
+    </div>
+  </form>
+
+  <script>
+    document.getElementById("createPostForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const title = document.getElementById("title").value;
+      const text = document.getElementById("text").value;
+      const author = parseInt(document.getElementById("author").value);
+      const category = document.getElementById("category").value;
+      const code = document.getElementById("code").value;
+      const images = document.getElementById("images").value.split("\n");
+
+      try {
+        const response = await fetch("/posts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            title,
+            text,
+            author,
+            category: [category],
+            code,
+            images
+          })
+        });
+
+        if (response.ok) {
+          alert("Post created successfully");
+          window.location.href = "/";
+        } else {
+          const errorData = await response.text();
+          throw new Error(errorData);
+        }
+      } catch (error) {
+        const errorElement = document.createElement("div");
+        errorElement.className = "error-message";
+        errorElement.textContent = error.message;
+        document.body.appendChild(errorElement);
+      }
+    });
+  </script>
+</body>
+</html>

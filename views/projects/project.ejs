@@ -72,12 +72,12 @@
     </header>
     <main>
         <% if(project) { %>
-            <div class="project">
-                <h2 class="project-title"><%= project.title %></h2>
-                <p class="project-description"><%= project.text.replace(/\n/g, '<br>').replace(/<br>/g, '<br>') %></p>
-            </div>
+        <div class="project">
+            <h2 class="project-title"><%= project.title %></h2>
+            <p class="project-description"><%= project.text %></p>
+        </div>
         <% } else { %>
-            <p>No project found!</p>
+        <p>No project found!</p>
         <% } %>
     </main>
     <footer></footer>

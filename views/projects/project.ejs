@@ -1,86 +1,127 @@
 <!DOCTYPE html>
-<html lang="en" data-critters-container>
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project</title>
-    <link rel="icon" href="images/icon.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-    <style>
-        body {
-            font-size: 16px;
-            font-weight: 400;
-            font-family: 'Source Sans Pro', 'Helvetica Neue', sans-serif;
-            background-color: #fdfdfd;
-            font-display: swap;
-            color: #404040;
-            margin: 0;
-            -webkit-font-smoothing: antialiased;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project</title>
+  <link rel="icon" href="images/icon.png">
+  <style>
+    body {
+      font-size: 16px;
+      font-weight: 400;
+      font-family: 'Source Sans Pro', 'Helvetica Neue', sans-serif;
+      background-color: #fdfdfd;
+      font-display: swap;
+      color: #404040;
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        header {
-            background-color: #333;
-            padding: 20px;
-            text-align: center;
-            color: #fff;
-        }
+    header {
+      background-color: #333;
+      padding: 20px;
+      text-align: center;
+      color: #fff;
+    }
 
-        main {
-            max-width: 900px;
-            margin: 30px auto;
-            padding: 40px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            text-align: left;
-            line-height: 1.6;
-        }
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 40px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      text-align: left;
+      line-height: 1.6;
+    }
 
-        h1 {
-            margin-top: 0;
-        }
+    h1 {
+      margin-top: 0;
+    }
 
-        .project {
-            margin-bottom: 20px;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            background-color: #fff;
-            text-align: left;
-        }
+    .project {
+      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      background-color: #fff;
+      text-align: left;
+    }
 
-        .project-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-align: center;
-        }
+    .project-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-align: center;
+    }
 
-        .project-description {
-            font-size: 16px;
-            color: #444;
-        }
+    .project-image {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
 
-    </style>
+    .code-block-container {
+      background-color: #252525;
+      padding: 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .code-block {
+      font-family: Consolas, monospace;
+      white-space: pre-wrap;
+      color: #ebebeb;
+    }
+
+    .code-block code {
+      color: #fff;
+    }
+
+    p, pre {
+      margin: 0;
+    }
+
+    .project-image {
+      display: block;
+      max-width: 70%;
+      margin: 10px auto;
+      border-radius: 5px;
+    }
+  </style>
 </head>
-
 <body>
-    <header>
-        <h1>S0T12</h1>
-        <p>Hi</p>
-    </header>
-    <main>
-        <% if(project) { %>
-        <div class="project">
-            <h2 class="project-title"><%= project.title %></h2>
-            <p class="project-description"><%= project.text %></p>
-        </div>
-        <% } else { %>
-        <p>No project found!</p>
+  <header>
+    <h1>S0T12</h1>
+    <p>Hi</p>
+  </header>
+  <main>
+    <% if (project) { %>
+      <div class="project">
+        <h2 class="project-title"><%- project.title %></h2>
+        <% let paragraphs = project.text.split(/(@Code[\s\S]*?@Code|@Image\s*[^@\n]*)/gm); %>
+        <% for (let i = 0; i < paragraphs.length; i++) { %>
+          <% let paragraph = paragraphs[i].trim(); %>
+          <% if (paragraph.startsWith('@Code')) { %>
+            <div class="code-block-container">
+              <code class="code-block"><%- paragraph.replace(/@Code\s*/g, '') %></code>
+            </div>
+          <% } else if (paragraph.startsWith('@Image')) { %>
+            <% let imageUrl = paragraph.replace('@Image', '').trim(); %>
+            <div class="image-container">
+              <img class="project-image" src="<%- imageUrl %>" alt="Project Image">
+            </div>
+          <% } else { %>
+            <p><%- paragraph %></p>
+          <% } %>
         <% } %>
-    </main>
-    <footer></footer>
+      </div>
+    <% } else { %>
+      <p>No project found!</p>
+    <% } %>
+  </main>
+  <footer></footer>
 </body>
-
 </html>

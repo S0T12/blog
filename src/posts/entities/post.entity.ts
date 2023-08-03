@@ -23,7 +23,7 @@ export class PostEntity {
   author: UserEntity;
 
   @Column({ type: 'text', nullable: true })
-  code: string;
+  code: string[];
 
   @Column('simple-array', { nullable: true })
   images: string[];

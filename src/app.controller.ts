@@ -1,16 +1,7 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Render,
-  Res,
-} from '@nestjs/common';
+import { Controller, Get, Param, Render } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CategoriesService } from './categories/categories.service';
 import { PostsService } from './posts/posts.service';
-import { CreatePostDto } from './posts/dto/create-post.dto';
 
 @Controller()
 export class AppController {
@@ -27,13 +18,13 @@ export class AppController {
     return { categories };
   }
 
-  @Get('/about')
+  @Get('about')
   @Render('about/about')
   async getAbout() {
     console.log('about');
   }
 
-  @Get('/projects')
+  @Get('projects')
   @Render('projects/list')
   async getList() {
     const projects = await this._postsService.findByCategory('Projects');
@@ -47,7 +38,7 @@ export class AppController {
     return { project };
   }
 
-  @Get('/create')
+  @Get('create')
   @Render('projects/create')
   async handleCreate() {
     return {};

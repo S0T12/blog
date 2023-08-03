@@ -3,11 +3,11 @@ POST http://localhost:3000/posts
 Content-Type: application/json
 
 {
-    "title": "HELLO WORLD",
-    "text": "hello world",
+    "title": "WORLD",
+    "text": "hello world, how can I fix this error?",
     "author": 6,
     "category": ["Projects"],
-    "code": "console.log('Hello World!');",
+    "code": "[console.log('Hello World!');]",
     "images": [
     "https://image1.jpg",
     "https://image2.jpg"
@@ -20,7 +20,7 @@ GET http://localhost:3000/posts
 
 
 ### Get by id
-GET http://localhost:3000/posts/1
+GET http://localhost:3000/posts/
 
 
 ### Update post
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 
 ### Remove post
-DELETE http://localhost:3000/posts/1
+DELETE http://localhost:3000/posts/63
 
 
 ### Get by category

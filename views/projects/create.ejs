@@ -6,18 +6,22 @@
     body {
       font-family: Arial, sans-serif;
     }
+    
     h1 {
       color: #333;
       margin-bottom: 20px;
     }
+
     form {
       width: 400px;
       margin: 0 auto;
     }
+
     label {
       display: block;
       margin-bottom: 5px;
     }
+
     input[type="text"],
     input[type="number"],
     textarea {
@@ -30,6 +34,7 @@
     textarea {
       height: 150px;
     }
+
     button[type="submit"] {
       background-color: #333;
       color: #fff;
@@ -38,12 +43,37 @@
       border-radius: 3px;
       cursor: pointer;
     }
+
     button[type="submit"]:hover {
       background-color: #555;
     }
+
     .error-message {
       color: red;
       margin-bottom: 10px;
+    }
+
+    .image-example {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    .image-container {
+      display: block;
+      text-align: center;
+    }
+
+    .code-block {
+      font-family: Consolas, monospace;
+      white-space: pre-wrap;
+      color: #ebebeb;
+      background-color: #252525;
+      padding: 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin-top: 20px;
+      margin-bottom: 20px;
     }
   </style>
 </head>
@@ -66,58 +96,85 @@
       <label for="category">Category:</label>
       <input type="text" id="category" name="category" required>
     </div>
-    <div>
-      <label for="code">Code:</label>
-      <textarea id="code" name="code"></textarea>
-    </div>
-    <div>
-      <label for="images">Images:</label>
-      <input type="text" id="images" name="images" required>
-    </div>
-    <div>
-      <button type="submit">Create</button>
-    </div>
+    <button type="submit">Create</button>
   </form>
-
+  <div class="error-message"></div>
+  <div id="preview">
+  </div>
   <script>
+    document.getElementById("text").addEventListener("input", () => {
+      const textInput = document.getElementById("text");
+      const text = textInput.value;
+
+      const previewElement = document.getElementById("preview");
+      previewElement.innerHTML = parseTextWithCodeAndImages(text);
+    });
+
+    function parseTextWithCodeAndImages(text) {
+      const paragraphs = text.split('\n\n');
+      let parsedText = '';
+      paragraphs.forEach(paragraph => {
+        if (paragraph.includes('@Image')) {
+          const imageUrl = paragraph.replace('@Image', '').trim();
+          parsedText += `<div class="image-container">
+                           <img class="image-example" src="${imageUrl}" alt="Image">
+                         </div>`;
+        } else {
+          parsedText += `<p>${paragraph}</p>`;
+        }
+      });
+
+      const parsedTextWithCode = parsedText.replace(/@Code\s*([\s\S]*?)@Code/gm, '<pre class="code-block">$1</pre>');
+
+      return parsedTextWithCode;
+    }
+
     document.getElementById("createPostForm").addEventListener("submit", async (event) => {
       event.preventDefault();
 
       const title = document.getElementById("title").value;
-      const text = document.getElementById("text").value;
+      const textInput = document.getElementById("text");
+      const text = textInput.value.trim();
       const author = parseInt(document.getElementById("author").value);
       const category = document.getElementById("category").value;
-      const code = document.getElementById("code").value;
-      const images = document.getElementById("images").value.split("\n");
 
-      try {
-        const response = await fetch("/posts", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            title,
-            text,
-            author,
-            category: [category],
-            code,
-            images
-          })
-        });
-
-        if (response.ok) {
-          alert("Post created successfully");
-          window.location.href = "/";
-        } else {
-          const errorData = await response.text();
-          throw new Error(errorData);
+      const paragraphs = text.split('\n\n');
+      const codeArray = [];
+      const imagesArray = [];
+      paragraphs.forEach(paragraph => {
+        if (paragraph.includes('@Code')) {
+          const codeText = paragraph.replace('@Code', '').trim();
+          codeArray.push(codeText);
+        } else if (paragraph.includes('@Image')) {
+          const imageUrl = paragraph.replace('@Image', '').trim();
+          imagesArray.push(imageUrl);
         }
-      } catch (error) {
+      });
+
+      const response = await fetch("/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          text,
+          author,
+          code: codeArray,
+          images: imagesArray,
+          category: [category],
+        }),
+      });
+
+      if (response.ok) {
+        alert("Post created successfully");
+        window.location.href = "/";
+      } else {
+        const errorData = await response.text();
         const errorElement = document.createElement("div");
         errorElement.className = "error-message";
-        errorElement.textContent = error.message;
-        document.body.appendChild(errorElement);
+        errorElement.textContent = errorData;
+        document.querySelector(".error-message").appendChild(errorElement);
       }
     });
   </script>

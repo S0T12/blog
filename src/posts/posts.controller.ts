@@ -29,21 +29,21 @@ export class PostsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    const post = this._postsService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    const post = this._postsService.findOne(id);
     return {
       project: post,
     };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this._postsService.update(+id, updatePostDto);
+  update(@Param('id') id: number, @Body() updatePostDto: UpdatePostDto) {
+    return this._postsService.update(id, updatePostDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this._postsService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this._postsService.remove(id);
   }
 
   @Get('category/:category')

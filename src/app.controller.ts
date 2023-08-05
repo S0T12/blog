@@ -1,46 +1,54 @@
-import { Controller, Get, Param, Render } from '@nestjs/common';
+import { Controller, Get, Render, Delete } from '@nestjs/common';
 import { AppService } from './app.service';
-import { CategoriesService } from './categories/categories.service';
-import { PostsService } from './posts/posts.service';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    private readonly _categoriesService: CategoriesService,
-    private readonly _postsService: PostsService,
-  ) {}
+  constructor(private readonly appService: AppService) {}
 
   @Get()
   @Render('layouts/main')
   async getMain() {
-    const categories = await this._categoriesService.findAll();
-    return { categories };
+    return {};
   }
 
   @Get('about')
   @Render('about/about')
   async getAbout() {
-    console.log('about');
+    return {};
   }
 
   @Get('projects')
   @Render('projects/list')
   async getList() {
-    const projects = await this._postsService.findByCategory('Projects');
-    return { projects };
+    return {};
   }
 
   @Get('projects/:id')
   @Render('projects/project')
-  async GetPorject(@Param('id') id: number) {
-    const project = await this._postsService.findOne(id);
-    return { project };
+  async GetProject() {
+    return {};
   }
 
   @Get('create')
   @Render('projects/create')
   async handleCreate() {
     return {};
+  }
+
+  @Get('edit/:id')
+  @Render('projects/edit')
+  async handleEdit() {
+    return {};
+  }
+
+  @Get('delete/:id')
+  @Render('projects/delete')
+  async handleDelete() {
+    return {};
+  }
+
+  @Delete('posts/:id/delete')
+  async deletePost() {
+    return 'Post deleted successfully';
   }
 }

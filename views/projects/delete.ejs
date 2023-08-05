@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Delete Post</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .post-details {
+      margin-bottom: 20px;
+    }
+
+    .post-details p {
+      margin-bottom: 10px;
+    }
+
+    button[type="submit"] {
+      background-color: #ff4d4f;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #d9363e;
+    }
+  </style>
+</head>
+<body>
+  <h1>Delete Post</h1>
+  <div class="post-details">
+    <p><strong>Title:</strong> <%= post.title %></p>
+    <p><strong>Text:</strong> <%= post.text %></p>
+    <p><strong>Author:</strong> <%= post.author.name %></p>
+    <p><strong>Category:</strong> <%= post.category.name %></p>
+  </div>
+  <form id="deletePostForm" method="POST" action="/posts/<%= post.id %>/delete">
+    <button type="submit">Delete</button>
+  </form>
+  <script>
+    document.getElementById("deletePostForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const response = await fetch(event.target.action, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        alert("Post deleted successfully");
+        window.location.href = "/";
+      } else {
+        const errorData = await response.text();
+        alert(errorData);
+      }
+    });
+  </script>
+</body>
+</html>

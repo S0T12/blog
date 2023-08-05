@@ -123,5 +123,28 @@
     <% } %>
   </main>
   <footer></footer>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const projectId = '<%= project.id %>';
+      fetch(`/posts/${projectId}`)
+        .then(response => response.json())
+        .then(data => {
+          const project = data.project;
+          const projectTitleElement = document.querySelector('.project-title');
+          const projectTextElement = document.querySelector('.project-text');
+
+          if (projectTitleElement) {
+            projectTitleElement.textContent = project.title;
+          }
+
+          if (projectTextElement) {
+            projectTextElement.innerHTML = project.text;
+          }
+        })
+        .catch(error => console.log(error));
+    });
+  </script>
+</body>
 </body>
 </html>

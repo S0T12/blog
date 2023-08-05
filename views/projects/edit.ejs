@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Post</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    form {
+      width: 400px;
+      margin: 0 auto;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+    }
+    textarea {
+      height: 150px;
+    }
+
+    button[type="submit"] {
+      background-color: #333;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #555;
+    }
+
+    .error-message {
+      color: red;
+      margin-bottom: 10px;
+    }
+
+    .image-example {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    .image-container {
+      display: block;
+      text-align: center;
+    }
+
+    .code-block {
+      font-family: Consolas, monospace;
+      white-space: pre-wrap;
+      color: #ebebeb;
+      background-color: #252525;
+      padding: 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Edit Post</h1>
+  <form id="editPostForm">
+    <div>
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required value="<%= post.title %>">
+    </div>
+    <div>
+      <label for="text">Text:</label>
+      <textarea id="text" name="text" required><%= post.text %></textarea>
+    </div>
+    <div>
+      <label for="author">Author:</label>
+      <input type="number" id="author" name="author" required value="<%= post.author.id %>">
+    </div>
+    <div>
+      <label for="category">Category:</label>
+      <input type="text" id="category" name="category" required value="<%= post.category.name %>">
+    </div>
+    <button type="submit">Update</button>
+  </form>
+  <div class="error-message"></div>
+  <div id="preview">
+  </div>
+  <script>
+    document.getElementById("text").addEventListener("input", () => {
+      const textInput = document.getElementById("text");
+      const text = textInput.value;
+
+      const previewElement = document.getElementById("preview");
+      previewElement.innerHTML = parseTextWithCodeAndImages(text);
+    });
+
+    function parseTextWithCodeAndImages(text) {
+      const paragraphs = text.split('\n\n');
+      let parsedText = '';
+      paragraphs.forEach(paragraph => {
+        if (paragraph.includes('@Image')) {
+          const imageUrl = paragraph.replace('@Image', '').trim();
+          parsedText += `<div class="image-container">
+                           <img class="image-example" src="${imageUrl}" alt="Image">
+                         </div>`;
+        } else {
+          parsedText += `<p>${paragraph}</p>`;
+        }
+      });
+
+      const parsedTextWithCode = parsedText.replace(/@Code\s*([\s\S]*?)@Code/gm, '<pre class="code-block">$1</pre>');
+
+      return parsedTextWithCode;
+    }
+
+    document.getElementById("editPostForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const title = document.getElementById("title").value;
+      const textInput = document.getElementById("text");
+      const text = textInput.value.trim();
+      const author = parseInt(document.getElementById("author").value);
+      const category = document.getElementById("category").value;
+
+      const paragraphs = text.split('\n\n');
+      const codeArray = [];
+      const imagesArray = [];
+      paragraphs.forEach(paragraph => {
+        if (paragraph.includes('@Code')) {
+          const codeText = paragraph.replace('@Code', '').trim();
+          codeArray.push(codeText);
+        } else if (paragraph.includes('@Image')) {
+          const imageUrl = paragraph.replace('@Image', '').trim();
+          imagesArray.push(imageUrl);
+        }
+      });
+
+      const response = await fetch("/posts/<%= post.id %>", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          text,
+          author,
+          code: codeArray,
+          images: imagesArray,
+          category: [category],
+        }),
+      });
+
+      if (response.ok) {
+        alert("Post updated successfully");
+        window.location.href = "/projects/<%= post.id %>";
+      } else {
+        const errorData = await response.text();
+        const errorElement = document.createElement("div");
+        errorElement.className = "error-message";
+        errorElement.textContent = errorData;
+        document.querySelector(".error-message").appendChild(errorElement);
+      }
+    });
+  </script>
+</body>
+</html>

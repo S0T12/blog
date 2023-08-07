@@ -21,7 +21,7 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: 'user' })
   role: string;
 
   @OneToMany(() => PostEntity, (post) => post.author)

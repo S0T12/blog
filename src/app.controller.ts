@@ -1,4 +1,4 @@
-import { Controller, Get, Render, Delete, Param } from '@nestjs/common';
+import { Controller, Get, Render, Param } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CategoriesService } from './categories/categories.service';
 import { PostsService } from './posts/posts.service';
@@ -10,6 +10,18 @@ export class AppController {
     private readonly _categoriesService: CategoriesService,
     private readonly _postsService: PostsService,
   ) {}
+
+  @Get('signup')
+  @Render('signup/signup')
+  async signUp() {
+    return {};
+  }
+
+  @Get('login')
+  @Render('login/login')
+  async login() {
+    return {};
+  }
 
   @Get()
   @Render('categories/index')

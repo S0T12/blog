@@ -9,6 +9,9 @@ export class CreateUserDto {
   @IsString()
   name: string;
 
+  @IsString()
+  password: string;
+
   @IsRole({ message: 'Role must be either "user" or "admin"' })
   role: string;
 

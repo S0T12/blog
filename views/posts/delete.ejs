@@ -42,7 +42,7 @@
     <p><strong>Author:</strong> <%= post.author.name %></p>
     <p><strong>Category:</strong> <%= post.category.name %></p>
   </div>
-  <form id="deletePostForm" method="POST" action="/posts/<%= post.id %>/delete">
+  <form id="deletePostForm" method="DELETE" action="/posts/<%= post.id %>">
     <button type="submit">Delete</button>
   </form>
   <script>

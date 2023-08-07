@@ -41,12 +41,12 @@ export class PostsService {
     return this._postEntity.save(post);
   }
 
-  findAll() {
-    return this._postEntity.find({ relations: ['author', 'category'] });
+  async findAll() {
+    return await this._postEntity.find({ relations: ['author', 'category'] });
   }
 
-  findOne(id: number) {
-    return this._postEntity.findOne({
+  async findOne(id: number) {
+    return await this._postEntity.findOne({
       where: { id },
       relations: ['author', 'category'],
     });

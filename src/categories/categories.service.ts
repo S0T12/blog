@@ -16,8 +16,8 @@ export class CategoriesService {
     return this._categoryRepository.save(createCategoryDto);
   }
 
-  findAll() {
-    return this._categoryRepository.find();
+  async findAll() {
+    return await this._categoryRepository.find();
   }
 
   findOne(id: number) {

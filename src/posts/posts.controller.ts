@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Render,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -19,23 +20,28 @@ export class PostsController {
 
   @UseGuards(AdminGuard)
   @Post()
-  create(@Body() createPostDto: CreatePostDto) {
-    return this._postsService.create(createPostDto);
+  async create(@Body() createPostDto: CreatePostDto) {
+    return await this._postsService.create(createPostDto);
   }
 
   @Get()
-  findAll() {
-    return this._postsService.findAll();
+  async findAll() {
+    const posts = await this._postsService.findAll();
+    return { posts };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    const post = this._postsService.findOne(id);
-    return {
-      project: post,
-    };
+  @Render('posts/post')
+  async findOne(@Param('id') id: number) {
+    try {
+      const post = await this._postsService.findOne(id);
+      return { post };
+    } catch (error) {
+      return { post: error };
+    }
   }
 
+  @UseGuards(AdminGuard)
   @Patch(':id')
   update(@Param('id') id: number, @Body() updatePostDto: UpdatePostDto) {
     return this._postsService.update(id, updatePostDto);

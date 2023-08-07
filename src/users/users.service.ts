@@ -29,6 +29,10 @@ export class UsersService {
     });
   }
 
+  findByUsername(username: string) {
+    return this._userRepository.findOne({ where: { username: username } });
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     const updatedUser = plainToClass(UserEntity, updateUserDto);
     return this._userRepository.update({ id }, updatedUser);

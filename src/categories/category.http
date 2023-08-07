@@ -16,11 +16,11 @@ GET http://localhost:3000/categories/5
 
 
 ### Update category
-PATCH http://localhost:3000/categories/1
+PATCH http://localhost:3000/categories/5
 Content-Type: application/json
 
 {
-    "name": ""
+    "name": "posts"
 }
 
 ### Delete category

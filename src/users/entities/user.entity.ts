@@ -19,6 +19,9 @@ export class UserEntity {
   name: string;
 
   @Column()
+  password: string;
+
+  @Column()
   role: string;
 
   @OneToMany(() => PostEntity, (post) => post.author)

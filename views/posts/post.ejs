@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project</title>
+  <title>Post</title>
   <link rel="icon" href="images/icon.png">
   <style>
     body {
@@ -98,10 +98,10 @@
     <p>Hi</p>
   </header>
   <main>
-    <% if (project) { %>
+    <% if (post) { %>
       <div class="project">
-        <h2 class="project-title"><%- project.title %></h2>
-        <% let paragraphs = project.text.split(/(@Code[\s\S]*?@Code|@Image\s*[^@\n]*)/gm); %>
+        <h2 class="project-title"><%- post.title %></h2>
+        <% let paragraphs = post.text.split(/(@Code[\s\S]*?@Code|@Image\s*[^@\n]*)/gm); %>
         <% for (let i = 0; i < paragraphs.length; i++) { %>
           <% let paragraph = paragraphs[i].trim(); %>
           <% if (paragraph.startsWith('@Code')) { %>
@@ -126,8 +126,8 @@
 
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      const projectId = '<%= project.id %>';
-      fetch(`/posts/${projectId}`)
+      const postId = '<%= post.id %>';
+      fetch(`/posts/${postId}`)
         .then(response => response.json())
         .then(data => {
           const project = data.project;

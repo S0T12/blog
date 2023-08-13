@@ -65,6 +65,12 @@
         button[type="submit"]:hover {
           background-color: #555;
         }
+
+        .error-message {
+          color: red;
+          margin-bottom: 10px;
+          margin-left: 45%;
+        }
     </style>
 </head>
 <body>
@@ -73,15 +79,49 @@
         <p>Login</p>
     </header>
     <main>
-        <form action="/auth" method="POST" enctype="application/json">
+        <form id="loginForm">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required>
 
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required>
 
-            <button type="submit">Login</button>
+            <button type="submit" id="login">Login</button>
         </form>
     </main>
+    <div id="errorMessage" class="error-message"></div>
+    <script>
+      const loginForm = document.getElementById('loginForm');
+      const errorElement = document.getElementById('errorMessage');
+
+      loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        try {
+          const response = await fetch('http://localhost:3000/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              username,
+              password,
+            }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            window.location.href = '/';
+          } else {
+            const error = await response.json();
+            errorElement.textContent = error.message;
+          }
+        } catch (error) {
+          errorElement.textContent = error.message;
+          console.error('Error:', error.message);
+        }
+      });
+    </script>
 </body>
 </html>

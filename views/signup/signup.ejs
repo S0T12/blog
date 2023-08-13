@@ -66,6 +66,11 @@
     button[type="submit"]:hover {
       background-color: #555;
     }
+
+    .error-message {
+      color: red;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -74,7 +79,7 @@
     <p>Signup</p>
   </header>
   <main>
-    <form action="http://localhost:3000/users" method="POST" enctype="application/json">
+    <form id="signupForm">
       <label for="username">Username</label>
       <input type="text" id="username" name="username" required>
       
@@ -91,10 +96,44 @@
 
       <input type="hidden" id="posts" name="posts[]" value="">
 
-      <button type="submit">Signup</button>
+      <button type="submit" id="signup">Signup</button>
     </form>
   </main>
-  <footer>
-  </footer>
+  <div class="error-message"></div>
+  <script>
+    const signupForm = document.getElementById('signupForm');
+    const errorElement = document.querySelector('.error-message');
+
+    signupForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const name = document.getElementById('name').value;
+      const password = document.getElementById('password').value;
+      const role = document.getElementById('role').value;
+      const posts = document.getElementById('posts').value;
+
+      const response = await fetch("http://localhost:3000/users", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          username,
+          name,
+          password,
+          role,
+          posts: [],
+        }),
+      });
+
+      if(response.ok) {
+        alert("Signup successfully");
+        window.location.href = "/";
+      } else {
+        const errorData = await response.text();
+        errorDataParse = JSON.parse(errorData);
+        errorElement.textContent = errorDataParse.message;
+      }
+    });
+  </script>
 </body>
 </html>

@@ -29,8 +29,10 @@ export class UsersService {
     });
   }
 
-  findByUsername(username: string) {
-    return this._userRepository.findOne({ where: { username: username } });
+  async findByUsername(username: string) {
+    return await this._userRepository.findOne({
+      where: { username: username },
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
@@ -48,9 +50,5 @@ export class UsersService {
       return true;
     }
     return false;
-  }
-
-  getUserByUsername(username: string) {
-    return this._userRepository.findOne({ where: { username } });
   }
 }

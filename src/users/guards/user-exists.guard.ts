@@ -14,7 +14,7 @@ export class UserExistsGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const { username } = request.body;
 
-    const userExists = await this.usersService.getUserByUsername(username);
+    const userExists = await this.usersService.findByUsername(username);
 
     if (userExists) {
       throw new ConflictException('Username already exists');

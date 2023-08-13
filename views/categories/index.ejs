@@ -82,22 +82,67 @@
 <body>
   <header>
     <h1>S0T12</h1>
-    <p>Hi</p>
-    <a class="login-btn" href="/login">Login</a>
-    <a class="signup-btn" href="/signup">Signup</a>
+    <% if (typeof authToken !== 'undefined' && authToken) { %>
+      <p>Welcome, <%= username %>!</p>
+    <% } else { %>
+      <p>Hi</p>
+      <a class="login-btn" href="/login">Login</a>
+      <a class="signup-btn" href="/signup">Signup</a>
+    <% } %>
   </header>
   <main>
     <ul>
       <% categories.forEach(category => { %>
         <% if (category.name === 'About') { %>
           <li><a href="/about"><%= category.name %></a></li>
-        <% } else if (category.name === 'posts') { %>
+        <% } else if (category.name === 'Posts') { %>
           <li><a href="/posts"><%= category.name %></a></li>
         <% } %>
       <% }) %>
     </ul>    
   </main>
-  <footer>
-  </footer>
+  <script>
+    function getCookie(cname) {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(cname + '=')) {
+          return cookie.substring(cname.length + 1);
+        }
+      }
+      return '';
+    }
+
+    const welcomeMessage = document.querySelector('p');
+    const loginBtn = document.querySelector('.login-btn');
+    const signupBtn = document.querySelector('.signup-btn');
+    const authToken = getCookie('token');
+
+    async function checkAuthStatus() {
+      try {
+        if (authToken) {
+          const response = await fetch('http://localhost:3000/auth/check', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${authToken}`
+            },
+            credentials: 'include'
+          });
+
+          if (response.ok) {
+            const user = await response.json();
+            welcomeMessage.innerText = `Welcome, ${user.username}!`;
+            loginBtn.style.display = 'none';
+            signupBtn.style.display = 'none';
+          }
+        }
+      } catch (error) {
+        console.error('Error while checking authentication status:', error);
+      }
+    }
+
+    checkAuthStatus();
+  </script>
 </body>
 </html>

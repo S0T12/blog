@@ -35,23 +35,22 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('check')
   async checkAuth(@Headers('cookie') cookie: string) {
-    const authToken = this.getAuthTokenFromCookie(cookie);
+    const authToken = this._authService.getAuthTokenFromCookie(cookie);
 
     try {
-      const payload = this._jwtService.verify(authToken);
+      const payload = this._jwtService.verify(authToken, {
+        secret: process.env.SECRET,
+      });
+
       return { username: payload.username, id: payload.sub };
     } catch (error) {
       throw new UnauthorizedException('Invalid token');
     }
   }
 
-  private getAuthTokenFromCookie(cookie: string) {
-    const cookies = cookie.split(';');
-    const tokenCookie = cookies.find((cookie) =>
-      cookie.trim().startsWith('token='),
-    );
-    const authToken = tokenCookie.split('=')[1];
-
-    return authToken;
+  @Get('logout')
+  async logout(@Res() res) {
+    res.clearCookie('token');
+    res.redirect('/');
   }
 }

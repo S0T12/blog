@@ -59,7 +59,8 @@
     }
 
     .login-btn,
-    .signup-btn {
+    .signup-btn,
+    .logout-btn {
       color: #fff;
       text-decoration: none;
       padding: 10px 20px;
@@ -71,18 +72,24 @@
     }
 
     .login-btn {
-      right: 120px;
+      right: 220px;
     }
 
     .signup-btn {
-      right: 10px;
+      right: 120px;
+    }
+
+    .logout-btn {
+      right: 60px;
+      display: none;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>S0T12</h1>
-    <% if (typeof authToken !== 'undefined' && authToken) { %>
+    <% if (authToken) { %>
+      <a class="logout-btn" href="/auth/logout">Logout</a>
       <p>Welcome, <%= username %>!</p>
     <% } else { %>
       <p>Hi</p>
@@ -116,12 +123,13 @@
     const welcomeMessage = document.querySelector('p');
     const loginBtn = document.querySelector('.login-btn');
     const signupBtn = document.querySelector('.signup-btn');
+    const logoutBtn = document.querySelector('.logout-btn');
     const authToken = getCookie('token');
 
     async function checkAuthStatus() {
       try {
         if (authToken) {
-          const response = await fetch('http://localhost:3000/auth/check', {
+          const response = await fetch('/auth/check', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -133,9 +141,18 @@
           if (response.ok) {
             const user = await response.json();
             welcomeMessage.innerText = `Welcome, ${user.username}!`;
-            loginBtn.style.display = 'none';
-            signupBtn.style.display = 'none';
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (signupBtn) signupBtn.style.display = 'none';
+            if (logoutBtn) logoutBtn.style.display = 'block';
+          } else {
+            if (loginBtn) loginBtn.style.display = 'block';
+            if (signupBtn) signupBtn.style.display = 'block';
+            if (logoutBtn) logoutBtn.style.display = 'none';
           }
+        } else {
+          if (loginBtn) loginBtn.style.display = 'block';
+          if (signupBtn) signupBtn.style.display = 'block';
+          if (logoutBtn) logoutBtn.style.display = 'none';
         }
       } catch (error) {
         console.error('Error while checking authentication status:', error);

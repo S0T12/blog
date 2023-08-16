@@ -7,9 +7,6 @@ export class CreatePostDto {
   @IsString()
   text: string;
 
-  @IsNumber()
-  author: number;
-
   @IsArray()
   code: string[];
 

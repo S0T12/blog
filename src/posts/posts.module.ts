@@ -9,6 +9,8 @@ import { UsersModule } from '../users/users.module';
 import { UserEntity } from '../users/entities/user.entity';
 import { AdminGuard } from './guards/admin.guard';
 import { CategoriesService } from '../categories/categories.service';
+import { AuthService } from '../auth/auth.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -16,7 +18,14 @@ import { CategoriesService } from '../categories/categories.service';
     UsersModule,
   ],
   controllers: [PostsController],
-  providers: [PostsService, UsersService, AdminGuard, CategoriesService],
+  providers: [
+    PostsService,
+    UsersService,
+    AdminGuard,
+    CategoriesService,
+    AuthService,
+    JwtService,
+  ],
   exports: [PostsService],
 })
 export class PostsModule {}

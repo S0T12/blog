@@ -119,32 +119,33 @@
         <% } %>
       </div>
     <% } else { %>
-      <p>No project found!</p>
+      <p>No post found!</p>
     <% } %>
   </main>
   <footer></footer>
 
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      const postId = '<%= post.id %>';
-      fetch(`/posts/${postId}`)
-        .then(response => response.json())
-        .then(data => {
-          const project = data.project;
-          const projectTitleElement = document.querySelector('.project-title');
-          const projectTextElement = document.querySelector('.project-text');
+      const postId = '<%= post ? post.id : "" %>';
+      if (postId) {
+        fetch(`/posts/${postId}`)
+          .then(response => response.json())
+          .then(data => {
+            const project = data.project;
+            const projectTitleElement = document.querySelector('.project-title');
+            const projectTextElement = document.querySelector('.project-text');
 
-          if (projectTitleElement) {
-            projectTitleElement.textContent = project.title;
-          }
+            if (projectTitleElement) {
+              projectTitleElement.textContent = project.title;
+            }
 
-          if (projectTextElement) {
-            projectTextElement.innerHTML = project.text;
-          }
-        })
-        .catch(error => console.log(error));
+            if (projectTextElement) {
+              projectTextElement.innerHTML = project.text;
+            }
+          })
+          .catch(error => console.log(error));
+      }
     });
   </script>
-</body>
 </body>
 </html>

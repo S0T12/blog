@@ -1,7 +1,8 @@
-import { Controller, Get, Render, Param } from '@nestjs/common';
+import { Controller, Get, Render, Param, UseGuards, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CategoriesService } from './categories/categories.service';
 import { PostsService } from './posts/posts.service';
+import { AdminGuard } from './posts/guards/admin.guard';
 
 @Controller()
 export class AppController {
@@ -25,9 +26,11 @@ export class AppController {
 
   @Get()
   @Render('categories/index')
-  async main() {
+  async main(@Req() req) {
     const categories = await this._categoriesService.findAll();
-    return { categories };
+    const authToken = req.cookies.token;
+    const username = req.user?.username;
+    return { categories, authToken, username };
   }
 
   @Get('about')
@@ -43,12 +46,25 @@ export class AppController {
     return { posts };
   }
 
+  @Get('posts/:id')
+  @Render('posts/post')
+  async getPost(@Param('id') id: number) {
+    try {
+      const post = await this._postsService.findOne(id);
+      return { post };
+    } catch (error) {
+      return { post: error };
+    }
+  }
+
+  @UseGuards(AdminGuard)
   @Get('create')
   @Render('posts/create')
   async handleCreate() {
     return {};
   }
 
+  @UseGuards(AdminGuard)
   @Get('edit/:id')
   @Render('posts/edit')
   async handleEdit(@Param('id') id: number) {
@@ -56,6 +72,7 @@ export class AppController {
     return { post };
   }
 
+  @UseGuards(AdminGuard)
   @Get('delete/:id')
   @Render('posts/delete')
   async handleDelete(@Param('id') id: number) {

@@ -1,1 +1,1 @@
-export const jwtConstant = { secret: 'hello world' };
+export const jwtConstant = { secret: process.env.SECRET };

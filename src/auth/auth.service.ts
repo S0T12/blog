@@ -10,7 +10,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
+  async validateUser(username: string, pass: string) {
     const user = await this._userService.findByUsername(username);
     if (user && user.password === pass) {
       return user;
@@ -28,5 +28,15 @@ export class AuthService {
     return {
       token: this.jwtService.sign(payload),
     };
+  }
+
+  getAuthTokenFromCookie(cookie: string) {
+    const cookies = cookie.split(';');
+    const tokenCookie = cookies.find((cookie) =>
+      cookie.trim().startsWith('token='),
+    );
+    const authToken = tokenCookie.split('=')[1];
+
+    return authToken;
   }
 }

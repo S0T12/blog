@@ -16,14 +16,14 @@ export class PostsService {
     private readonly _categoriesService: CategoriesService,
   ) {}
 
-  async create(createPostDto: CreatePostDto) {
+  async create(createPostDto: CreatePostDto, author: string) {
     const post = this._postEntity.create(
       createPostDto as DeepPartial<PostEntity>,
     );
 
-    const { author, category } = createPostDto;
+    const { category } = createPostDto;
 
-    const user = await this._usersService.findOne(createPostDto.author);
+    const user = await this._usersService.findByUsername(author);
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -53,26 +53,13 @@ export class PostsService {
   }
 
   async update(id: number, updatePostDto: UpdatePostDto) {
-    const post = await this._postEntity
-      .createQueryBuilder('post')
-      .leftJoinAndSelect('post.author', 'author')
-      .where('post.id = :id', { id })
-      .getOne();
+    const post = await this._postEntity.findOne({ where: { id } });
 
     if (!post) {
       throw new NotFoundException('Post not found');
     }
 
-    const { author, ...partialPost } = updatePostDto;
-    if (author) {
-      const user = await this._usersService.findOne(author);
-      if (!user) {
-        throw new NotFoundException('User not found');
-      }
-      post.author = user;
-    }
-
-    Object.assign(post, partialPost);
+    Object.assign(post, updatePostDto);
 
     return this._postEntity.save(post);
   }

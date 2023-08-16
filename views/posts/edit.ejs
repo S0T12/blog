@@ -88,10 +88,7 @@
       <label for="text">Text:</label>
       <textarea id="text" name="text" required><%= post.text %></textarea>
     </div>
-    <div>
-      <label for="author">Author:</label>
-      <input type="number" id="author" name="author" required value="<%= post.author.id %>">
-    </div>
+
     <div>
       <label for="category">Category:</label>
       <input type="text" id="category" name="category" required value="<%= post.category.name %>">
@@ -129,13 +126,24 @@
       return parsedTextWithCode;
     }
 
+    function getCookie(cname) {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(cname + '=')) {
+          return cookie.substring(cname.length + 1);
+        }
+      }
+      return '';
+    }
+
     document.getElementById("editPostForm").addEventListener("submit", async (event) => {
       event.preventDefault();
 
       const title = document.getElementById("title").value;
       const textInput = document.getElementById("text");
       const text = textInput.value.trim();
-      const author = parseInt(document.getElementById("author").value);
+      const authToken = getCookie('token');
       const category = document.getElementById("category").value;
 
       const paragraphs = text.split('\n\n');
@@ -155,11 +163,11 @@
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`
         },
         body: JSON.stringify({
           title,
           text,
-          author,
           code: codeArray,
           images: imagesArray,
           category: [category],

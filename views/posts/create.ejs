@@ -6,7 +6,7 @@
     body {
       font-family: Arial, sans-serif;
     }
-    
+
     h1 {
       color: #333;
       margin-bottom: 20px;
@@ -23,7 +23,6 @@
     }
 
     input[type="text"],
-    input[type="number"],
     textarea {
       width: 100%;
       padding: 5px;
@@ -33,6 +32,14 @@
     }
     textarea {
       height: 150px;
+    }
+
+    select {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
     }
 
     button[type="submit"] {
@@ -89,10 +96,6 @@
       <textarea id="text" name="text" required></textarea>
     </div>
     <div>
-      <label for="author">Author:</label>
-      <input type="number" id="author" name="author" required>
-    </div>
-    <div>
       <label for="category">Category:</label>
       <input type="text" id="category" name="category" required>
     </div>
@@ -129,13 +132,24 @@
       return parsedTextWithCode;
     }
 
+    function getCookie(cname) {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(cname + '=')) {
+          return cookie.substring(cname.length + 1);
+        }
+      }
+      return '';
+    }
+
     document.getElementById("createPostForm").addEventListener("submit", async (event) => {
       event.preventDefault();
 
       const title = document.getElementById("title").value;
       const textInput = document.getElementById("text");
       const text = textInput.value.trim();
-      const author = parseInt(document.getElementById("author").value);
+      const authToken = getCookie('token');
       const category = document.getElementById("category").value;
 
       const paragraphs = text.split('\n\n');
@@ -155,11 +169,11 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`
         },
         body: JSON.stringify({
           title,
           text,
-          author,
           code: codeArray,
           images: imagesArray,
           category: [category],

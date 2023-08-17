@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="images/icon.png">
+  <title>S0T12 - Admin</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+
+    header {
+      background-color: #333;
+      padding: 20px;
+      text-align: center;
+      color: #fff;
+    }
+
+    main {
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 40px;
+      background-color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .search-form input[type="text"] {
+      padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .search-form button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #555;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .search-form button:hover {
+      background-color: #333;
+    }
+
+    .user-info {
+      margin-top: 20px;
+      border-top: 1px solid #ccc;
+      padding-top: 20px;
+    }
+
+    .user-info h3 {
+      margin-top: 0;
+    }
+
+    .user-info label {
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .user-info select {
+      padding: 5px;
+    }
+
+    .submit-btn {
+      padding: 10px 20px;
+      background-color: #555;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>S0T12 - Admin Panel</h1>
+  </header>
+  <main>
+    <form class="search-form">
+      <input type="text" id="search-input" placeholder="Search by username">
+      <button type="submit">Search</button>
+    </form>
+
+    <div class="user-info" id="user-info"></div>
+  </main>
+  <script>
+    function getCookie(cname) {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(cname + '=')) {
+          return cookie.substring(cname.length + 1);
+        }
+      }
+      return '';
+    }
+    
+    async function updateUserRole(username) {
+      const roleSelect = document.getElementById('role-select');
+      const role = roleSelect.options[roleSelect.selectedIndex].value;
+      const authToken = getCookie('token');
+
+
+      try {
+        const response = await fetch(`/users/update/${username}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`
+          },
+          credentials: 'include',
+          body: JSON.stringify({ role }),
+        });
+
+        if (response.ok) {
+          alert('Role updated successfully');
+          window.location.reload();
+        } else {
+          alert('Failed to update role');
+        }
+      } catch (error) {
+        console.error('Error while updating role:', error);
+        alert('An error occurred while updating role');
+      }
+    }
+
+    function searchUser() {
+      const searchInput = document.getElementById('search-input').value;
+
+      fetch(`/users/find/${searchInput}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.foundUser) {
+            const userInfoDiv = document.getElementById('user-info');
+            userInfoDiv.innerHTML = `
+              <h3>${data.foundUser.username}</h3>
+              <label for="role-select">Role:</label>
+              <select name="role" id="role-select">
+                <option value="user" ${data.foundUser.role === 'user' ? 'selected' : ''}>User</option>
+                <option value="admin" ${data.foundUser.role === 'admin' ? 'selected' : ''}>Admin</option>
+              </select>
+              <button class="submit-btn" onclick="updateUserRole('${data.foundUser.username}')">Update Role</button>
+            `;
+          } else {
+            alert('User not found');
+          }
+        })
+        .catch(error => {
+          console.error('Error while searching user:', error);
+          alert('An error occurred while searching user');
+        });
+    }
+
+    document.querySelector('.search-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      searchUser();
+    });
+  </script>
+</body>
+</html>

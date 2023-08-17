@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -50,5 +50,14 @@ export class UsersService {
       return true;
     }
     return false;
+  }
+
+  async updateRole(username: string, role: string) {
+    const user = await this._userRepository.findOne({ where: { username } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    user.role = role;
+    return this._userRepository.save(user);
   }
 }

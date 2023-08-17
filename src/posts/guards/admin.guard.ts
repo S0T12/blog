@@ -14,7 +14,6 @@ export class AdminGuard implements CanActivate {
 
     const authToken = request.headers.authorization?.split(' ')[1];
     const cookieToken = request.cookies?.token;
-
     if (authToken) {
       try {
         const payload = await this._jwtService.verifyAsync(authToken, {

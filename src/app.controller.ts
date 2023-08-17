@@ -3,6 +3,7 @@ import { AppService } from './app.service';
 import { CategoriesService } from './categories/categories.service';
 import { PostsService } from './posts/posts.service';
 import { AdminGuard } from './posts/guards/admin.guard';
+import { UsersService } from './users/users.service';
 
 @Controller()
 export class AppController {
@@ -10,6 +11,7 @@ export class AppController {
     private readonly appService: AppService,
     private readonly _categoriesService: CategoriesService,
     private readonly _postsService: PostsService,
+    private readonly _usersService: UsersService,
   ) {}
 
   @Get('signup')
@@ -78,5 +80,12 @@ export class AppController {
   async handleDelete(@Param('id') id: number) {
     const post = await this._postsService.findOne(id);
     return { post };
+  }
+
+  @Get('admin')
+  @Render('admin/admin')
+  @UseGuards(AdminGuard)
+  async showAdminPage() {
+    return {};
   }
 }

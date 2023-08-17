@@ -30,3 +30,12 @@ Content-Type: application/json
 
 ### Remove user
 DELETE http://localhost:3000/users/6
+
+### update role
+PATCH  http://localhost:3000/users/update/hello
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjo5LCJpYXQiOjE2OTIyNzkyODMsImV4cCI6MTY5Mjg4NDA4M30.QpGfrC6R7HmND8rA92LhKeI4o_YWhXOAGMv2uk0XSYY
+
+{
+    "role": "user"
+}

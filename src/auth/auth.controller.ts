@@ -12,6 +12,7 @@ import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 
 @Controller('auth')
 export class AuthController {
@@ -23,11 +24,17 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req, @Res() res) {
-    const user = await this._authService.login(req.user);
-    if (user instanceof UnauthorizedException) {
-      throw user;
+    const user = req.user;
+    const isPasswordValid = await bcrypt.compare(
+      req.body.password,
+      user.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
     }
-    const token = user.token;
+
+    const token = this._authService.generateToken(user);
     res.cookie('token', token);
     res.send(user);
   }

@@ -2,6 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { SigninDto } from './dto/signIn.dto';
+import * as bcrypt from 'bcrypt';
+import { UserEntity } from '../users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -10,11 +12,13 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, pass: string) {
+  async validateUser(username: string, password: string) {
     const user = await this._userService.findByUsername(username);
-    if (user && user.password === pass) {
+
+    if (user && (await bcrypt.compare(password, user.password))) {
       return user;
     }
+
     return null;
   }
 
@@ -22,12 +26,18 @@ export class AuthService {
     const validate = await this.validateUser(user.username, user.password);
 
     if (!validate) {
-      return new UnauthorizedException('username or password incorrect');
+      throw new UnauthorizedException('Username or password incorrect');
     }
-    const payload = { username: validate.username, sub: validate.id };
+
+    const token = this.generateToken(validate);
     return {
-      token: this.jwtService.sign(payload),
+      token,
     };
+  }
+
+  generateToken(user: UserEntity): string {
+    const payload = { username: user.username, sub: user.id };
+    return this.jwtService.sign(payload);
   }
 
   getAuthTokenFromCookie(cookie: string) {

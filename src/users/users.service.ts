@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { plainToClass } from 'class-transformer';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -13,8 +14,12 @@ export class UsersService {
     private readonly _userRepository: Repository<UserEntity>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     const user = plainToClass(UserEntity, createUserDto);
+
+    const hash = await bcrypt.hash(user.password, 10);
+    user.password = hash;
+
     return this._userRepository.save(user);
   }
 
@@ -35,8 +40,12 @@ export class UsersService {
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto) {
     const updatedUser = plainToClass(UserEntity, updateUserDto);
+
+    const hash = await bcrypt.hash(updatedUser.password, 10);
+    updatedUser.password = hash;
+
     return this._userRepository.update({ id }, updatedUser);
   }
 

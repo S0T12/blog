@@ -100,9 +100,9 @@
   <main>
     <ul>
       <% categories.forEach(category => { %>
-        <% if (category.name === 'About') { %>
+        <% if (category.name === 'about') { %>
           <li><a href="/about"><%= category.name %></a></li>
-        <% } else if (category.name === 'Posts') { %>
+        <% } else if (category.name === 'posts') { %>
           <li><a href="/posts"><%= category.name %></a></li>
         <% } %>
       <% }) %>

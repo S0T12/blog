@@ -10,6 +10,7 @@ import {
   ConflictException,
   NotFoundException,
   Req,
+  ForbiddenException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -24,6 +25,10 @@ export class UsersController {
   @Post()
   @UseGuards(UserExistsGuard)
   async create(@Body() createUserDto: CreateUserDto) {
+    if (createUserDto.role === 'admin') {
+      throw new ForbiddenException('Cannot register as an admin');
+    }
+
     try {
       return await this.usersService.create(createUserDto);
     } catch (error) {

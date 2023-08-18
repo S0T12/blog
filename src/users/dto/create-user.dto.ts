@@ -1,4 +1,4 @@
-import { IsArray, IsString } from 'class-validator';
+import { IsArray, IsEmail, IsString } from 'class-validator';
 import { PostEntity } from '../../posts/entities/post.entity';
 import { IsRole } from '../validators/role.validator';
 
@@ -11,6 +11,9 @@ export class CreateUserDto {
 
   @IsString()
   password: string;
+
+  @IsEmail()
+  email: string;
 
   @IsRole({ message: 'Role must be either "user" or "admin"' })
   role: string;

@@ -7,8 +7,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PostsModule } from './posts/posts.module';
 import { CategoriesModule } from './categories/categories.module';
 import { AuthModule } from './auth/auth.module';
-import { AdminGuard } from './posts/guards/admin.guard';
-import { AuthService } from './auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 
 @Module({
@@ -22,6 +20,7 @@ import { JwtService } from '@nestjs/jwt';
         host: configService.get<string>('HOST'),
         port: +configService.get<number>('DATABASE_PORT'),
         username: configService.get('USERNAME'),
+        password: configService.get<string>('PASSWORD'),
         database: configService.get('DATABASE'),
         synchronize: true,
         autoLoadEntities: true,

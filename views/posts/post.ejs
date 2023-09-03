@@ -80,8 +80,8 @@
       color: #fff;
     }
 
-    p, pre {
-      margin: 0;
+    p {
+      white-space: pre-wrap;
     }
 
     .project-image {
@@ -114,7 +114,7 @@
               <img class="project-image" src="<%- imageUrl %>" alt="Project Image">
             </div>
           <% } else { %>
-            <p><%- paragraph %></p>
+            <p><%- paragraph.replace(/\n/g, '<br>').replace(/  /g, '&nbsp;&nbsp;') %></p>
           <% } %>
         <% } %>
       </div>

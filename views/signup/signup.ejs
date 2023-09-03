@@ -112,7 +112,7 @@
       const email = document.getElementById('email').value;
       const posts = document.getElementById('posts').value;
 
-      const response = await fetch("http://localhost:3000/users", {
+      const response = await fetch("/users", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({

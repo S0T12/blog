@@ -80,6 +80,83 @@
     .submit-btn:hover {
       background-color: #333;
     }
+
+    .category-manager {
+      margin-top: 20px;
+      border-top: 1px solid #ccc;
+      padding-top: 20px;
+    }
+
+    .category-manager h3 {
+      margin-top: 0;
+    }
+
+    .category-manager label {
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .category-manager input[type="text"] {
+      padding: 5px;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .category-manager button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #555;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .category-manager button:hover {
+      background-color: #333;
+    }
+
+    .category-list {
+      margin-top: 20px;
+    }
+
+    .category-list ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .category-list li {
+      margin-bottom: 10px;
+    }
+
+    .category-list li input[type="text"] {
+      display: none;
+      width: 80%;
+    }
+
+    .category-list li.edit-mode input[type="text"] {
+      display: inline-block;
+    }
+
+    .category-list li.edit-mode span {
+      display: none;
+    }
+
+    .action-buttons button {
+      padding: 5px 10px;
+      margin-right: 10px;
+      background-color: #555;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .action-buttons button:hover {
+      background-color: #333;
+    }
   </style>
 </head>
 <body>
@@ -93,6 +170,20 @@
     </form>
 
     <div class="user-info" id="user-info"></div>
+
+    <div class="category-manager">
+      <h3>Category Manager</h3>
+      <form id="create-category-form">
+        <label for="category-name-input">Category Name:</label>
+        <input type="text" id="category-name-input" required>
+        <button type="submit">Create Category</button>
+      </form>
+
+      <div class="category-list">
+        <h3>Categories List</h3>
+        <ul id="category-list"></ul>
+      </div>
+    </div>
   </main>
   <script>
     function getCookie(cname) {
@@ -105,34 +196,33 @@
       }
       return '';
     }
-    
-    async function updateUserRole(username) {
+
+    function updateUserRole(username) {
       const roleSelect = document.getElementById('role-select');
       const role = roleSelect.options[roleSelect.selectedIndex].value;
       const authToken = getCookie('token');
 
-
-      try {
-        const response = await fetch(`/users/update/${username}`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken}`
-          },
-          credentials: 'include',
-          body: JSON.stringify({ role }),
+      fetch(`/users/update/${username}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`
+        },
+        credentials: 'include',
+        body: JSON.stringify({ role }),
+      })
+        .then(response => {
+          if (response.ok) {
+            alert('Role updated successfully');
+            window.location.reload();
+          } else {
+            alert('Failed to update role');
+          }
+        })
+        .catch(error => {
+          console.error('Error while updating role:', error);
+          alert('An error occurred while updating role');
         });
-
-        if (response.ok) {
-          alert('Role updated successfully');
-          window.location.reload();
-        } else {
-          alert('Failed to update role');
-        }
-      } catch (error) {
-        console.error('Error while updating role:', error);
-        alert('An error occurred while updating role');
-      }
     }
 
     function searchUser() {
@@ -162,10 +252,159 @@
         });
     }
 
+    function createCategory(event) {
+      event.preventDefault();
+      const categoryNameInput = document.getElementById('category-name-input');
+      const categoryName = categoryNameInput.value.trim();
+      const authToken = getCookie('token');
+
+      fetch(`/categories`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`
+        },
+        credentials: 'include',
+        body: JSON.stringify({ name: categoryName }),
+      })
+        .then(response => {
+          if (response.ok) {
+            alert('Category created successfully');
+            categoryNameInput.value = '';
+            loadCategories();
+          } else {
+            alert('Failed to create category');
+          }
+        })
+        .catch(error => {
+          console.error('Error while creating category:', error);
+          alert('An error occurred while creating category');
+        });
+    }
+
+    function updateCategory(id, newName) {
+      const authToken = getCookie('token');
+
+      fetch(`/categories/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`
+        },
+        credentials: 'include',
+        body: JSON.stringify({ name: newName }),
+      })
+        .then(response => {
+          if (response.ok) {
+            alert('Category updated successfully');
+            loadCategories();
+          } else {
+            alert('Failed to update category');
+          }
+        })
+        .catch(error => {
+          console.error('Error while updating category:', error);
+          alert('An error occurred while updating category');
+        });
+    }
+
+    function deleteCategory(id) {
+      const authToken = getCookie('token');
+
+      fetch(`/categories/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        },
+        credentials: 'include',
+      })
+        .then(response => {
+          if (response.ok) {
+            alert('Category deleted successfully');
+            loadCategories();
+          } else {
+            alert('Failed to delete category');
+          }
+        })
+        .catch(error => {
+          console.error('Error while deleting category:', error);
+          alert('An error occurred while deleting category');
+        });
+    }
+
+    function loadCategories() {
+      fetch(`/categories`)
+        .then(response => response.json())
+        .then(data => {
+          const categoryList = document.getElementById('category-list');
+          categoryList.innerHTML = '';
+
+          if (data.categories && data.categories.length > 0) {
+            data.categories.forEach(category => {
+              const li = document.createElement('li');
+              li.classList.add('edit-mode');
+              li.id = `category-${category.id}`;
+
+              const categoryNameInput = document.createElement('input');
+              categoryNameInput.type = 'text';
+
+              const categoryNameDisplay = document.createElement('span');
+              categoryNameDisplay.innerText = category.name;
+
+              const editButton = document.createElement('button');
+              editButton.innerText = 'Edit';
+              editButton.classList.add('submit-btn');
+              editButton.addEventListener('click', () => {
+                li.classList.add('edit-mode');
+              });
+
+              const updateButton = document.createElement('button');
+              updateButton.innerText = 'Update';
+              updateButton.classList.add('submit-btn');
+              updateButton.addEventListener('click', () => {
+                const newName = categoryNameInput.value.trim();
+                updateCategory(category.id, newName);
+              });
+
+              const deleteButton = document.createElement('button');
+              deleteButton.innerText = 'Delete';
+              deleteButton.classList.add('submit-btn');
+              deleteButton.addEventListener('click', () => {
+                deleteCategory(category.id);
+              });
+
+              const actionButtons = document.createElement('div');
+              actionButtons.classList.add('action-buttons');
+              actionButtons.appendChild(editButton);
+              actionButtons.appendChild(updateButton);
+              actionButtons.appendChild(deleteButton);
+
+              li.appendChild(categoryNameInput);
+              li.appendChild(categoryNameDisplay);
+              li.appendChild(actionButtons);
+
+              categoryList.appendChild(li);
+            });
+          } else {
+            const li = document.createElement('li');
+            li.innerText = 'No categories found';
+            categoryList.appendChild(li);
+          }
+        })
+        .catch(error => {
+          console.error('Error while loading categories:', error);
+          alert('An error occurred while loading categories');
+        });
+    }
+
     document.querySelector('.search-form').addEventListener('submit', (e) => {
       e.preventDefault();
       searchUser();
     });
+
+    document.querySelector('#create-category-form').addEventListener('submit', createCategory);
+
+    loadCategories();
   </script>
 </body>
 </html>

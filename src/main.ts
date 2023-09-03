@@ -19,7 +19,7 @@ async function bootstrap() {
   app.setViewEngine('ejs');
 
   await app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}/`);
+    console.log(`Server is running on s0t12.com (:`);
   });
 }
 bootstrap();

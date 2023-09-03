@@ -2,7 +2,7 @@ import { Controller, Get, Render, Param, UseGuards, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CategoriesService } from './categories/categories.service';
 import { PostsService } from './posts/posts.service';
-import { AdminGuard } from './posts/guards/admin.guard';
+import { AdminGuard } from './shared/guards/admin.guard';
 import { UsersService } from './users/users.service';
 
 @Controller()

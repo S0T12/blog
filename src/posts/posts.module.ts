@@ -7,7 +7,7 @@ import { UsersService } from '../users/users.service';
 import { CategoryEntity } from '../categories/entities/category.entity';
 import { UsersModule } from '../users/users.module';
 import { UserEntity } from '../users/entities/user.entity';
-import { AdminGuard } from './guards/admin.guard';
+import { AdminGuard } from '../shared/guards/admin.guard';
 import { CategoriesService } from '../categories/categories.service';
 import { AuthService } from '../auth/auth.service';
 import { JwtService } from '@nestjs/jwt';

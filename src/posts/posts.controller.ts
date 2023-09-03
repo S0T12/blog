@@ -14,7 +14,7 @@ import {
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { AdminGuard } from './guards/admin.guard';
+import { AdminGuard } from '../shared/guards/admin.guard';
 import { AuthService } from '../auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 

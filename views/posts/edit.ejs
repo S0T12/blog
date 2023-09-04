@@ -1,23 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="images/icon.png">
   <title>Edit Post</title>
+  <link rel="icon" href="images/icon.png">
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      font-family: 'Source Sans Pro', 'Helvetica Neue', sans-serif;
+      background-color: #fdfdfd;
+      font-display: swap;
+      color: #404040;
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
     }
-    
+
+    header {
+      background-color: #333;
+      padding: 20px;
+      text-align: center;
+      color: #fff;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 40px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      text-align: left;
+      line-height: 1.6;
+    }
+
     h1 {
-      color: #333;
-      margin-bottom: 20px;
+      margin-top: 0;
     }
 
     form {
-      width: 400px;
-      margin: 0 auto;
+      margin-bottom: 20px;
     }
 
     label {
@@ -26,7 +50,6 @@
     }
 
     input[type="text"],
-    input[type="number"],
     textarea {
       width: 100%;
       padding: 5px;
@@ -34,6 +57,7 @@
       border-radius: 3px;
       border: 1px solid #ccc;
     }
+
     textarea {
       height: 150px;
     }
@@ -56,21 +80,29 @@
       margin-bottom: 10px;
     }
 
-    .image-example {
+    .project {
+      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      background-color: #fff;
+      text-align: left;
+    }
+
+    .project-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .project-image {
       max-width: 100%;
       height: auto;
       margin-bottom: 10px;
     }
 
-    .image-container {
-      display: block;
-      text-align: center;
-    }
-
-    .code-block {
-      font-family: Consolas, monospace;
-      white-space: pre-wrap;
-      color: #ebebeb;
+    .code-block-container {
       background-color: #252525;
       padding: 20px;
       border-radius: 5px;
@@ -78,56 +110,134 @@
       margin-top: 20px;
       margin-bottom: 20px;
     }
+
+    .code-block {
+      font-family: Consolas, monospace;
+      white-space: pre-wrap;
+      color: #ebebeb;
+    }
+
+    .code-block code {
+      color: #fff;
+    }
+
+    p {
+      white-space: pre-wrap;
+    }
+
+    .project-image {
+      display: block;
+      max-width: 100%;
+      margin: 10px auto;
+      border-radius: 5px;
+    }
+    
+    .edit-form {
+      margin-top: 40px;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .project-image, textarea, input[type="text"] {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
   </style>
 </head>
+
 <body>
-  <h1>Edit Post</h1>
-  <form id="editPostForm">
-    <div>
-      <label for="title">Title:</label>
-      <input type="text" id="title" name="title" required value="<%= post.title %>">
-    </div>
-    <div>
-      <label for="text">Text:</label>
-      <textarea id="text" name="text" required><%= post.text %></textarea>
-    </div>
+  <header>
+    <h1>S0T12</h1>
+    <p>Hi</p>
+  </header>
+  <main>
+    <% if (post) { %>
+      <div class="project">
+        <h2 class="project-title"><%- post.title %></h2>
+        <% let paragraphs = post.text.split(/(@Code[\s\S]*?@Code|@Image\s*[^@\n]*)/gm); %>
+        <% paragraphs.forEach(paragraph => { %>
+          <% let trimmedParagraph = paragraph.trim(); %>
+          <% if (trimmedParagraph.startsWith('@Code')) { %>
+            <div class="code-block-container">
+              <code class="code-block"><%- trimmedParagraph.replace(/@Code\s*/g, '') %></code>
+            </div>
+          <% } else if (trimmedParagraph.startsWith('@Image')) { %>
+            <% let imageUrl = trimmedParagraph.replace('@Image', '').trim(); %>
+            <div class="image-container">
+              <img class="project-image" src="<%- imageUrl %>" alt="Project Image">
+            </div>
+          <% } else { %>
+            <p><%- trimmedParagraph.replace(/\n/g, '<br>').replace(/  /g, '&nbsp;&nbsp;') %></p>
+          <% } %>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <p>No post found!</p>
+    <% } %>
 
-    <div>
-      <label for="category">Category:</label>
-      <input type="text" id="category" name="category" required value="<%= post.category.name %>">
-    </div>
-    <button type="submit">Update</button>
-  </form>
-  <div class="error-message"></div>
-  <div id="preview">
-  </div>
+    <form id="editPostForm" class="edit-form">
+      <div>
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required value="<%= post.title %>">
+      </div>
+      <div>
+        <label for="text">Text:</label>
+        <textarea id="text" name="text" required><%- post.text %></textarea>
+      </div>
+      <button type="submit">Update</button>
+    </form>
+    <div class="error-message"></div>
+  </main>
+  <footer></footer>
+
   <script>
-    document.getElementById("text").addEventListener("input", () => {
-      const textInput = document.getElementById("text");
-      const text = textInput.value;
+    window.addEventListener('DOMContentLoaded', () => {
+      const postId = '<%= post ? post.id : "" %>';
+      if (postId) {
+        fetch(`/posts/${postId}`)
+          .then(response => response.json())
+          .then(data => {
+            const project = data.project;
+            const projectTitleElement = document.querySelector('.project-title');
 
-      const previewElement = document.getElementById("preview");
-      previewElement.innerHTML = parseTextWithCodeAndImages(text);
+            if (projectTitleElement) {
+              projectTitleElement.textContent = project.title;
+            }
+          })
+          .catch(error => console.log(error));
+      }
     });
 
-    function parseTextWithCodeAndImages(text) {
-      const paragraphs = text.split('\n\n');
-      let parsedText = '';
-      paragraphs.forEach(paragraph => {
-        if (paragraph.includes('@Image')) {
-          const imageUrl = paragraph.replace('@Image', '').trim();
-          parsedText += `<div class="image-container">
-                           <img class="image-example" src="${imageUrl}" alt="Image">
-                         </div>`;
-        } else {
-          parsedText += `<p>${paragraph}</p>`;
-        }
+    document.getElementById("editPostForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const title = document.getElementById("title").value;
+      const text = document.getElementById("text").value;
+      const authToken = getCookie('token');
+
+      const response = await fetch(`/posts/<%= post.id %>`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`
+        },
+        body: JSON.stringify({
+          title,
+          text
+        }),
       });
 
-      const parsedTextWithCode = parsedText.replace(/@Code\s*([\s\S]*?)@Code/gm, '<pre class="code-block">$1</pre>');
-
-      return parsedTextWithCode;
-    }
+      if (response.ok) {
+        alert("Post updated successfully");
+        window.location.href = `/posts/<%= post.id %>`;
+      } else {
+        const errorData = await response.text();
+        const errorElement = document.createElement("div");
+        errorElement.className = "error-message";
+        errorElement.textContent = errorData;
+        document.querySelector(".error-message").appendChild(errorElement);
+      }
+    });
 
     function getCookie(cname) {
       const cookies = document.cookie.split(';');
@@ -139,55 +249,7 @@
       }
       return '';
     }
-
-    document.getElementById("editPostForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      const title = document.getElementById("title").value;
-      const textInput = document.getElementById("text");
-      const text = textInput.value.trim();
-      const authToken = getCookie('token');
-      const category = document.getElementById("category").value;
-
-      const paragraphs = text.split('\n\n');
-      const codeArray = [];
-      const imagesArray = [];
-      paragraphs.forEach(paragraph => {
-        if (paragraph.includes('@Code')) {
-          const codeText = paragraph.replace('@Code', '').trim();
-          codeArray.push(codeText);
-        } else if (paragraph.includes('@Image')) {
-          const imageUrl = paragraph.replace('@Image', '').trim();
-          imagesArray.push(imageUrl);
-        }
-      });
-
-      const response = await fetch("/posts/<%= post.id %>", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`
-        },
-        body: JSON.stringify({
-          title,
-          text,
-          code: codeArray,
-          images: imagesArray,
-          category: [category],
-        }),
-      });
-
-      if (response.ok) {
-        alert("Post updated successfully");
-        window.location.href = "/projects/<%= post.id %>";
-      } else {
-        const errorData = await response.text();
-        const errorElement = document.createElement("div");
-        errorElement.className = "error-message";
-        errorElement.textContent = errorData;
-        document.querySelector(".error-message").appendChild(errorElement);
-      }
-    });
   </script>
 </body>
+
 </html>

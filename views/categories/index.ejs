@@ -127,10 +127,11 @@
       <% categories.forEach(category => { %>
         <% if (category.name === 'about') { %>
           <li><a href="/about"><%= category.name %></a></li>
-        <% } else if (category.name === 'posts') { %>
-          <li><a href="/posts"><%= category.name %></a></li>
-        <% } %>
-      <% }) %>
+        <% } else if (category.name === 'articles') { %>
+          <li><a href="/articles"><%= category.name %></a></li>
+        <% }  else if (category.name === 'projects') { %>
+          <li><a href="projects"><%= category.name %></a></li>
+      <% }})%>
     </ul>    
   </main>
   <script>

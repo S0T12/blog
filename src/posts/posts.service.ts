@@ -77,7 +77,7 @@ export class PostsService {
       throw new NotFoundException('Category not found');
     }
 
-    return this._postEntity
+    return await this._postEntity
       .createQueryBuilder('post')
       .innerJoin('post.category', 'category')
       .where('category.id = :categoryId', { categoryId: categoryEntity.id })

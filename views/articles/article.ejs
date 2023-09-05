@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Post</title>
+  <title>Article</title>
   <link rel="icon" href="images/icon.png">
   <style>
     body {
@@ -39,7 +39,7 @@
       margin-top: 0;
     }
 
-    .project {
+    .article {
       margin-bottom: 20px;
       padding: 20px;
       border-radius: 5px;
@@ -48,14 +48,14 @@
       text-align: left;
     }
 
-    .project-title {
+    .article-title {
       font-size: 20px;
       font-weight: bold;
       margin-bottom: 10px;
       text-align: center;
     }
 
-    .project-image {
+    .article-image {
       max-width: 100%;
       height: auto;
       margin-bottom: 10px;
@@ -84,7 +84,7 @@
       white-space: pre-wrap;
     }
 
-    .project-image {
+    .article-image {
       display: block;
       max-width: 70%;
       margin: 10px auto;
@@ -98,10 +98,10 @@
     <p>Hi</p>
   </header>
   <main>
-    <% if (post) { %>
-      <div class="project">
-        <h2 class="project-title"><%- post.title %></h2>
-        <% let paragraphs = post.text.split(/(@Code[\s\S]*?@Code|@Image\s*[^@\n]*)/gm); %>
+    <% if (article) { %>
+      <div class="article">
+        <h2 class="article-title"><%- article.title %></h2>
+        <% let paragraphs = article.text.split(/(@Code[\s\S]*?@Code|@Image\s*[^@\n]*)/gm); %>
         <% for (let i = 0; i < paragraphs.length; i++) { %>
           <% let paragraph = paragraphs[i].trim(); %>
           <% if (paragraph.startsWith('@Code')) { %>
@@ -111,7 +111,7 @@
           <% } else if (paragraph.startsWith('@Image')) { %>
             <% let imageUrl = paragraph.replace('@Image', '').trim(); %>
             <div class="image-container">
-              <img class="project-image" src="<%- imageUrl %>" alt="Project Image">
+              <img class="article-image" src="<%- imageUrl %>" alt="Article Image">
             </div>
           <% } else { %>
             <p><%- paragraph.replace(/\n/g, '<br>').replace(/  /g, '&nbsp;&nbsp;') %></p>
@@ -119,28 +119,28 @@
         <% } %>
       </div>
     <% } else { %>
-      <p>No post found!</p>
+      <p>No article found!</p>
     <% } %>
   </main>
   <footer></footer>
 
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      const postId = '<%= post ? post.id : "" %>';
-      if (postId) {
-        fetch(`/posts/${postId}`)
+      const articleId = '<%= article ? article.id : "" %>';
+      if (articleId) {
+        fetch(`/articles/${articleId}`)
           .then(response => response.json())
           .then(data => {
-            const project = data.project;
-            const projectTitleElement = document.querySelector('.project-title');
-            const projectTextElement = document.querySelector('.project-text');
+            const article = data.article;
+            const articleTitleElement = document.querySelector('.article-title');
+            const articleTextElement = document.querySelector('.article-text');
 
-            if (projectTitleElement) {
-              projectTitleElement.textContent = project.title;
+            if (articleTitleElement) {
+              articleTitleElement.textContent = article.title;
             }
 
-            if (projectTextElement) {
-              projectTextElement.innerHTML = project.text;
+            if (articleTextElement) {
+              articleTextElement.innerHTML = article.text;
             }
           })
           .catch(error => console.log(error));

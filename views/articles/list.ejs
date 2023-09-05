@@ -64,11 +64,11 @@
     <p>Hi</p>
   </header>
   <main>
-    <h1>Posts</h1>
-    <% posts.forEach(post => { %>
+    <h1>Articles</h1>
+    <% articles.forEach(article => { %>
       <div class="project">
-        <a href="/posts/<%= post.id %>"><h2 class="project-title"><%= post.title %></h2></a>
-        <p class="project-description"><%= post.text %></p>
+        <a href="/articles/<%= article.id %>"><h2 class="project-title"><%= article.title %></h2></a>
+        <p class="project-description"><%= article.text %></p>
       </div>
     <% }) %>
   </main>

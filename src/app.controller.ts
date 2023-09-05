@@ -41,21 +41,39 @@ export class AppController {
     return {};
   }
 
-  @Get('posts')
-  @Render('posts/list')
-  async findAll() {
-    const posts = await this._postsService.findAll();
-    return { posts };
+  @Get('articles')
+  @Render('articles/list')
+  async getArticles() {
+    const articles = await this._postsService.findByCategory('articles');
+    return { articles };
   }
 
-  @Get('posts/:id')
-  @Render('posts/post')
-  async getPost(@Param('id') id: number) {
+  @Get('articles/:id')
+  @Render('articles/article')
+  async getArticle(@Param('id') id: number) {
     try {
-      const post = await this._postsService.findOne(id);
-      return { post };
+      const article = await this._postsService.findOne(id);
+      return { article };
     } catch (error) {
-      return { post: error };
+      return { article: error };
+    }
+  }
+
+  @Get('projects')
+  @Render('projects/list')
+  async getProjects() {
+    const projects = await this._postsService.findByCategory('projects');
+    return { projects };
+  }
+
+  @Get('projects/:id')
+  @Render('projects/project')
+  async getProject(@Param('id') id: number) {
+    try {
+      const project = await this._postsService.findOne(id);
+      return { project };
+    } catch (error) {
+      return { project: error };
     }
   }
 

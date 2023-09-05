@@ -8,6 +8,7 @@ import { PostsModule } from './posts/posts.module';
 import { CategoriesModule } from './categories/categories.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtService } from '@nestjs/jwt';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { JwtService } from '@nestjs/jwt';
     PostsModule,
     CategoriesModule,
     AuthModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtService],

@@ -6,30 +6,34 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { PostEntity } from '../../posts/entities/post.entity';
+import { CommentEntity } from '../../comments/entities/comment.entity';
 
 @Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column({ type: 'varchar', unique: true })
   username: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   name: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   password: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   email: string;
 
-  @Column({ default: 'user' })
+  @Column({ type: 'varchar', default: 'user' })
   role: string;
 
-  @OneToMany(() => PostEntity, (post) => post.author)
+  @OneToMany(() => PostEntity, (post: PostEntity) => post.author)
   posts: PostEntity[];
 
-  @CreateDateColumn()
+  @OneToMany(() => CommentEntity, (comment: CommentEntity) => comment.author)
+  comments: CommentEntity[];
+
+  @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 }

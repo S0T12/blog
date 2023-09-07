@@ -42,13 +42,62 @@ export class PostsService {
   }
 
   async findAll() {
-    return await this._postEntity.find({ relations: ['author', 'category'] });
+    return await this._postEntity
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.category', 'category')
+      .leftJoinAndSelect('post.comments', 'comments')
+      .leftJoinAndSelect('comments.author', 'commentAuthor')
+      .leftJoinAndSelect('comments.replies', 'replies')
+      .leftJoinAndSelect('replies.author', 'replyAuthor')
+      .leftJoinAndSelect('post.author', 'author')
+      .select([
+        'post.id',
+        'post.title',
+        'post.text',
+        'post.createdAt',
+        'author.username',
+        'comments',
+        'commentAuthor.username',
+        'replies',
+        'replyAuthor.username',
+      ])
+      .getMany();
   }
 
   async findOne(id: number) {
-    return await this._postEntity.findOne({
+    const post = await this._postEntity
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.category', 'category')
+      .leftJoinAndSelect('post.comments', 'comments')
+      .leftJoinAndSelect('comments.author', 'commentAuthor')
+      .leftJoinAndSelect('comments.replies', 'replies')
+      .leftJoinAndSelect('replies.author', 'replyAuthor')
+      .leftJoinAndSelect('post.author', 'author')
+      .select([
+        'post.id',
+        'post.title',
+        'post.text',
+        'post.createdAt',
+        'author.username',
+        'comments',
+        'commentAuthor.username',
+        'replies',
+        'replyAuthor.username',
+      ])
+      .where('post.id = :id', { id })
+      .getOne();
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    return post;
+  }
+
+  async findOneWithRelations(id: number, relations: string[]) {
+    return this._postEntity.findOne({
       where: { id },
-      relations: ['author', 'category'],
+      relations,
     });
   }
 

@@ -20,7 +20,7 @@ GET http://localhost:3000/posts
 
 
 ### Get by id
-GET http://localhost:3000/posts/
+GET http://localhost:3000/posts/1
 
 
 ### Update post
@@ -38,4 +38,4 @@ DELETE http://localhost:3000/posts/63
 
 
 ### Get by category
-GET http://localhost:3000/posts/category/Projects
+GET http://localhost:3000/posts/category/articles

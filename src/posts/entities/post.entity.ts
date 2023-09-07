@@ -27,15 +27,16 @@ export class PostEntity {
   @Column({ type: 'text', nullable: true })
   code: string[];
 
-  @Column('simple-array', { nullable: true })
+  @Column({ type: 'text', nullable: true })
   images: string[];
+
+  @Column({ type: 'text', array: true, default: [] })
+  likes: string[];
 
   @ManyToOne(
     () => CategoryEntity,
     (category: CategoryEntity) => category.posts,
-    {
-      onDelete: 'CASCADE',
-    },
+    { onDelete: 'CASCADE' },
   )
   category: CategoryEntity;
 

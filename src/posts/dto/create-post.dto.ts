@@ -23,4 +23,8 @@ export class CreatePostDto {
   @IsOptional()
   @IsNumber()
   codePosition: number;
+
+  @IsArray()
+  @IsOptional()
+  likes: string[];
 }

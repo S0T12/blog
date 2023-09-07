@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -18,7 +19,10 @@ export class CommentEntity {
   @Column({ type: 'varchar' })
   text: string;
 
-  @ManyToOne(() => UserEntity, (user: UserEntity) => user.comments)
+  @ManyToOne(() => UserEntity, (user: UserEntity) => user.comments, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'authorId', referencedColumnName: 'id' })
   author: UserEntity;
 
   @ManyToOne(() => PostEntity, (post: PostEntity) => post.comments)
@@ -27,9 +31,6 @@ export class CommentEntity {
   @OneToMany(
     () => CommentEntity,
     (comment: CommentEntity) => comment.parentComment,
-    {
-      nullable: true,
-    },
   )
   replies: CommentEntity[];
 

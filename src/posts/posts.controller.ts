@@ -74,6 +74,7 @@ export class PostsController {
     }
   }
 
+  @UseGuards(AdminGuard)
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this._postsService.remove(id);

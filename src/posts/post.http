@@ -6,8 +6,8 @@ Content-Type: application/json
     "title": "WORLD",
     "text": "hello world, how can I fix this error?",
     "author": 6,
-    "category": ["Projects"],
-    "code": "[console.log('Hello World!');]",
+    "category": "posts",
+    "code": ["console.log('Hello World!');"],
     "images": [
     "https://image1.jpg",
     "https://image2.jpg"
@@ -39,3 +39,11 @@ DELETE http://localhost:3000/posts/63
 
 ### Get by category
 GET http://localhost:3000/posts/category/articles
+
+
+### Like post
+POST http://localhost:3000/posts/1/like
+
+    
+### Unlike post
+POST http://localhost:3000/posts/1/unlike

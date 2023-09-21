@@ -1,12 +1,15 @@
 ### Create a new comment
 POST http://localhost:3000/comments
 Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InMwdDEyIiwic3ViIjoxLCJpYXQiOjE2OTUyNTk4NDQsImV4cCI6MTY5NTg2NDY0NH0.VQUr-KajVBwkz1kKg2saOa4eQFcociJ11ZmLNUYxPoI
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InMwdDEyIiwic3ViIjoxLCJpYXQiOjE2OTUyNTk4NDQsImV4cCI6MTY5NTg2NDY0NH0.VQUr-KajVBwkz1kKg2saOa4eQFcociJ11ZmLNUYxPoI
 
 {
   "text": "hello comment",
-  "postId": 1,
+  "postId": 2,
   "username": "s0t12"
 }
+
 
 ### Create a new reply comment
 POST http://localhost:3000/comments/1/replies
@@ -14,23 +17,41 @@ Content-Type: application/json
 
 {
   "text": "Reply to parent comment",
-  "postId": 1,
-  "username": "s0t12"
+  "postId": 2,
+  "username": "s0t12" 
 }
+
 
 ### Get all comments
 GET http://localhost:3000/comments
 
+
 ### Get a specific comment
-GET http://localhost:3000/comments/1
+GET http://localhost:3000/comments/63
+
+
+### Get by postId
+GET http://localhost:3000/comments/post/1
+
 
 ### Update a comment
-PATCH http://localhost:3000/comments/1
+PATCH http://localhost:3000/comments/82
 Content-Type: application/json
 
 {
-  "text": "Updated comment"
+  "text": "Updated comment."
 }
+
 
 ### Delete a comment
 DELETE http://localhost:3000/comments/1
+
+
+### Like a comment
+POST http://localhost:3000/comments/101/like
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InMwdDEyIiwic3ViIjoxLCJpYXQiOjE2OTUyNTk4NDQsImV4cCI6MTY5NTg2NDY0NH0.VQUr-KajVBwkz1kKg2saOa4eQFcociJ11ZmLNUYxPoI
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InMwdDEyIiwic3ViIjoxLCJpYXQiOjE2OTUyNTk4NDQsImV4cCI6MTY5NTg2NDY0NH0.VQUr-KajVBwkz1kKg2saOa4eQFcociJ11ZmLNUYxPoI
+
+### Unlike a comment
+POST http://localhost:3000/comments/1/unlike

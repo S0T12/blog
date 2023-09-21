@@ -17,6 +17,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { AdminGuard } from '../shared/guards/admin.guard';
 import { AuthService } from '../auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('posts')
 export class PostsController {
@@ -32,12 +33,17 @@ export class PostsController {
     @Body() createPostDto: CreatePostDto,
     @Headers('cookie') cookie: string,
   ) {
+    console.log(cookie);
     const authToken = this._authService.getAuthTokenFromCookie(cookie);
     try {
       const payload = this._jwtService.verify(authToken, {
         secret: process.env.SECRET,
       });
-      return await this._postsService.create(createPostDto, payload.username);
+      const post = await this._postsService.create(
+        createPostDto,
+        payload.username,
+      );
+      return { post };
     } catch (error) {
       throw new UnauthorizedException('Invalid token');
     }
@@ -45,6 +51,7 @@ export class PostsController {
 
   @Get()
   async findAll() {
+    console.log(`posts.controller.ts, 55, test >>>>`);
     const posts = await this._postsService.findAll();
     return { posts };
   }
@@ -52,7 +59,8 @@ export class PostsController {
   @Get(':id')
   @Render('posts/post')
   async findOne(@Param('id') id: number) {
-    return await this._postsService.findOne(id);
+    const post = await this._postsService.findOne(id);
+    return { post };
   }
 
   @UseGuards(AdminGuard)
@@ -68,7 +76,8 @@ export class PostsController {
       const payload = this._jwtService.verifyAsync(authToken, {
         secret: process.env.SECRET,
       });
-      return this._postsService.update(id, updatePostDto);
+      const post = this._postsService.update(id, updatePostDto);
+      return { post };
     } catch (error) {
       throw new UnauthorizedException('Invalid token');
     }
@@ -82,6 +91,23 @@ export class PostsController {
 
   @Get('category/:category')
   findByCategory(@Param('category') category: string) {
-    return this._postsService.findByCategory(category);
+    const posts = this._postsService.findByCategory(category);
+    return { posts };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/like')
+  async likePost(@Param('id') id: number) {
+    const post = await this._postsService.likePost(id);
+    const likes = post.likes;
+    return { likes };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/unlike')
+  async unlikePost(@Param('id') id: number) {
+    const post = await this._postsService.unlikePost(id);
+    const likes = post.likes;
+    return { likes };
   }
 }

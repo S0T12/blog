@@ -1,13 +1,13 @@
 ### get Token
-POST http://localhost:3000/auth
+POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "username": "use",
-    "password": "use"
+    "username": "s0t12",
+    "password": "s0t12"
 }
 
 ### check
 GET http://localhost:3000/auth/check
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imhhc3NhbiIsInN1YiI6IjEyMyIsImlhdCI6MTY5MTg4MzYxNH0.0eK4t7eaIWAGAqL3Q29WBGt8yczg9O58_iLMOLmqkPI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InMwdDEyIiwic3ViIjoxLCJpYXQiOjE2OTUyNTkxOTUsImV4cCI6MTY5NTg2Mzk5NX0.BbwaGzudLC8eEZsb4TjkrUZ6kD5qjzx598Tlgbxu7Gc

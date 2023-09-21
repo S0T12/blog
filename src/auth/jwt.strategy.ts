@@ -11,10 +11,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload) {
+  async validate(payload: any) {
     if (!payload) {
       throw new UnauthorizedException('Invalid token');
     }
-    return payload;
+    return { username: payload.username };
   }
 }

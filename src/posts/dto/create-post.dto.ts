@@ -13,8 +13,8 @@ export class CreatePostDto {
   @IsArray()
   images: string[];
 
-  @IsArray()
-  category: [];
+  @IsString()
+  category: string;
 
   @IsOptional()
   @IsNumber()
@@ -24,7 +24,7 @@ export class CreatePostDto {
   @IsNumber()
   codePosition: number;
 
-  @IsArray()
   @IsOptional()
-  likes: string[];
+  @IsNumber()
+  likes: number;
 }

@@ -3,6 +3,8 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -37,13 +39,15 @@ export class CommentEntity {
   @ManyToOne(() => CommentEntity, (comment: CommentEntity) => comment.replies, {
     nullable: true,
   })
+  @JoinColumn({ name: 'parentCommentId', referencedColumnName: 'id' })
   parentComment: CommentEntity;
 
   @Column({ type: 'boolean', default: false })
   isApproved: boolean;
 
-  @Column({ type: 'int', default: 0 })
-  likes: number;
+  @ManyToMany(() => UserEntity)
+  @JoinTable()
+  likes: UserEntity[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

@@ -4,14 +4,16 @@ import { CategoriesService } from './categories/categories.service';
 import { PostsService } from './posts/posts.service';
 import { AdminGuard } from './shared/guards/admin.guard';
 import { UsersService } from './users/users.service';
+import { CommentsService } from './comments/comments.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly _categoriesService: CategoriesService,
-    private readonly _postsService: PostsService,
-    private readonly _usersService: UsersService,
+    private readonly categoriesService: CategoriesService,
+    private readonly postsService: PostsService,
+    private readonly usersService: UsersService,
+    private readonly commentsService: CommentsService,
   ) {}
 
   @Get('signup')
@@ -29,7 +31,7 @@ export class AppController {
   @Get()
   @Render('categories/index')
   async main(@Req() req) {
-    const categories = await this._categoriesService.findAll();
+    const categories = await this.categoriesService.findAll();
     const authToken = req.cookies.token;
     const username = req.user?.username;
     return { categories, authToken, username };
@@ -44,7 +46,7 @@ export class AppController {
   @Get('articles')
   @Render('articles/list')
   async getArticles() {
-    const articles = await this._postsService.findByCategory('articles');
+    const articles = await this.postsService.findByCategory('articles');
     return { articles };
   }
 
@@ -52,8 +54,9 @@ export class AppController {
   @Render('articles/article')
   async getArticle(@Param('id') id: number) {
     try {
-      const article = await this._postsService.findOne(id);
-      return { article };
+      const article = await this.postsService.findOne(id);
+      const comments = await this.commentsService.findByPostId(id);
+      return { article, comments };
     } catch (error) {
       return { article: error };
     }
@@ -62,7 +65,7 @@ export class AppController {
   @Get('projects')
   @Render('projects/list')
   async getProjects() {
-    const projects = await this._postsService.findByCategory('projects');
+    const projects = await this.postsService.findByCategory('projects');
     return { projects };
   }
 
@@ -70,8 +73,10 @@ export class AppController {
   @Render('projects/project')
   async getProject(@Param('id') id: number) {
     try {
-      const project = await this._postsService.findOne(id);
-      return { project };
+      const project = await this.postsService.findOne(id);
+      const comments = await this.commentsService.findByPostId(id);
+      console.log(comments);
+      return { project, comments };
     } catch (error) {
       return { project: error };
     }
@@ -88,7 +93,7 @@ export class AppController {
   @Get('edit/:id')
   @Render('posts/edit')
   async handleEdit(@Param('id') id: number) {
-    const post = await this._postsService.findOne(id);
+    const post = await this.postsService.findOne(id);
     return { post };
   }
 
@@ -96,7 +101,7 @@ export class AppController {
   @Get('delete/:id')
   @Render('posts/delete')
   async handleDelete(@Param('id') id: number) {
-    const post = await this._postsService.findOne(id);
+    const post = await this.postsService.findOne(id);
     return { post };
   }
 

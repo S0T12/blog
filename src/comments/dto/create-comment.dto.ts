@@ -18,8 +18,4 @@ export class CreateCommentDto {
   @IsNumber()
   @IsOptional()
   parentId: number;
-
-  @IsString()
-  @IsNotEmpty()
-  username: string;
 }

@@ -40,12 +40,24 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
-  getAuthTokenFromCookie(cookie: string) {
-    const cookies = cookie.split(';');
-    const tokenCookie = cookies.find((cookie) =>
-      cookie.trim().startsWith('token='),
-    );
-    const authToken = tokenCookie.split('=')[1];
+  getAuthTokenFromCookie(cookie: string): string {
+    if (!cookie) {
+      throw new UnauthorizedException('Auth token is missing');
+    }
+
+    const tokenCookie = cookie
+      .split(';')
+      .find((cookie) => cookie.trim().startsWith('token='));
+
+    if (!tokenCookie) {
+      throw new UnauthorizedException('Auth token not found in cookie');
+    }
+
+    const authToken = tokenCookie.trim().split('=')[1];
+
+    if (!authToken) {
+      throw new UnauthorizedException('Invalid auth token');
+    }
 
     return authToken;
   }

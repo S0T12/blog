@@ -38,6 +38,8 @@ export class PostsService {
     }
     post.category = categoryEntity;
 
+    post.likes = createPostDto.likes || 0;
+
     return this._postEntity.save(post);
   }
 
@@ -65,27 +67,17 @@ export class PostsService {
   }
 
   async findOne(id: number) {
-    const post = await this._postEntity
-      .createQueryBuilder('post')
-      .leftJoinAndSelect('post.category', 'category')
-      .leftJoinAndSelect('post.comments', 'comments')
-      .leftJoinAndSelect('comments.author', 'commentAuthor')
-      .leftJoinAndSelect('comments.replies', 'replies')
-      .leftJoinAndSelect('replies.author', 'replyAuthor')
-      .leftJoinAndSelect('post.author', 'author')
-      .select([
-        'post.id',
-        'post.title',
-        'post.text',
-        'post.createdAt',
-        'author.username',
+    const post = await this._postEntity.findOne({
+      where: { id },
+      relations: [
+        'author',
+        'category',
         'comments',
-        'commentAuthor.username',
-        'replies',
-        'replyAuthor.username',
-      ])
-      .where('post.id = :id', { id })
-      .getOne();
+        'comments.author',
+        'comments.replies',
+        'comments.replies.author',
+      ],
+    });
 
     if (!post) {
       throw new NotFoundException('Post not found');
@@ -131,5 +123,31 @@ export class PostsService {
       .innerJoin('post.category', 'category')
       .where('category.id = :categoryId', { categoryId: categoryEntity.id })
       .getMany();
+  }
+
+  async likePost(id: number) {
+    const post = await this.findOne(id);
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    post.likes = post.likes + 1;
+
+    return this._postEntity.save(post);
+  }
+
+  async unlikePost(id: number) {
+    const post = await this.findOne(id);
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    if (post.likes > 0) {
+      post.likes = post.likes - 1;
+    }
+
+    return this._postEntity.save(post);
   }
 }

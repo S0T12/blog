@@ -1,22 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Article</title>
-  <link rel="icon" href="images/icon.png">
-  <style>
-    body {
-      font-size: 16px;
-      font-weight: 400;
-      font-family: 'Source Sans Pro', 'Helvetica Neue', sans-serif;
-      background-color: #fdfdfd;
-      font-display: swap;
-      color: #404040;
-      margin: 0;
-      -webkit-font-smoothing: antialiased;
-    }
 
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Article</title>
+  <link rel="icon" href="images/icon.png" />
+  <style>
+    /* Header */
     header {
       background-color: #333;
       padding: 20px;
@@ -24,6 +15,7 @@
       color: #fff;
     }
 
+    /* Main */
     main {
       max-width: 900px;
       margin: 30px auto;
@@ -31,121 +23,893 @@
       background-color: #fff;
       border-radius: 5px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      text-align: left;
-      line-height: 1.6;
     }
 
-    h1 {
-      margin-top: 0;
-    }
-
+    /* Article */
     .article {
       margin-bottom: 20px;
       padding: 20px;
       border-radius: 5px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       background-color: #fff;
-      text-align: left;
     }
 
     .article-title {
-      font-size: 20px;
+      font-size: 24px;
       font-weight: bold;
       margin-bottom: 10px;
       text-align: center;
     }
 
     .article-image {
+      display: block;
       max-width: 100%;
       height: auto;
-      margin-bottom: 10px;
-    }
-
-    .code-block-container {
-      background-color: #252525;
-      padding: 20px;
-      border-radius: 5px;
-      overflow-x: auto;
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
-
-    .code-block {
-      font-family: Consolas, monospace;
-      white-space: pre-wrap;
-      color: #ebebeb;
-    }
-
-    .code-block code {
-      color: #fff;
-    }
-
-    p {
-      white-space: pre-wrap;
-    }
-
-    .article-image {
-      display: block;
-      max-width: 70%;
       margin: 10px auto;
       border-radius: 5px;
     }
+
+    p {
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    /* Comments Section */
+    .comments-section {
+      margin-top: 30px;
+    }
+
+    .comment {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+    }
+
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .comment-author {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .comment-date {
+      font-size: 12px;
+      color: #777;
+    }
+
+    .comment-text {
+      margin-bottom: 10px;
+    }
+
+    .comment-actions {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .comment-actions .action-btn {
+      margin-left: 10px;
+      font-size: 12px;
+      padding: 4px 8px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .comment-actions .edit-btn {
+      background-color: #fff;
+      color: #007bff;
+      border: 1px solid #007bff;
+    }
+
+    .comment-actions .delete-btn {
+      background-color: #dc3545;
+      color: #fff;
+    }
+
+    .comment-actions .edit-form {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .comment-actions .edit-form textarea {
+      width: 100%;
+      resize: vertical;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .comment-actions .edit-form .submit-btn {
+      margin-top: 5px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: bold;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .reply {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+
+    .reply-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .reply-author {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .reply-date {
+      font-size: 12px;
+      color: #777;
+    }
+
+    .reply-text {
+      margin-bottom: 5px;
+    }
+
+    .reply-actions {
+      margin-top: 5px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .reply-actions .action-btn {
+      margin-left: 10px;
+      font-size: 12px;
+      padding: 2px 6px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .reply-actions .edit-btn {
+      background-color: #fff;
+      color: #007bff;
+      border: 1px solid #007bff;
+    }
+
+    .reply-actions .delete-btn {
+      background-color: #dc3545;
+      color: #fff;
+    }
+
+    .reply-actions .edit-form {
+      display: none;
+      margin-top: 5px;
+    }
+
+    .reply-actions .edit-form textarea {
+      width: 100%;
+      resize: vertical;
+      padding: 6px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .reply-actions .edit-form .submit-btn {
+      margin-top: 5px;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: bold;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .comment-votes {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .comment-votes .like-btn,
+    .reply-votes .like-btn {
+      font-size: 12px;
+      padding: 2px 6px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    .comment-votes .like-btn.unliked,
+    .reply-votes .like-btn.unliked {
+      background-color: transparent;
+      color: #007bff;
+    }
+
+    .comment-votes .like-btn:active,
+    .reply-votes .like-btn:active {
+      transform: scale(0.9);
+    }
+
+    .comment-votes .like-count,
+    .reply-votes .like-count {
+      margin-left: 5px;
+      font-size: 12px;
+      color: #777;
+    }
+
+    .comment-form {
+      margin-top: 20px;
+    }
+
+    .comment-form textarea {
+      width: 100%;
+      height: 80px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      resize: vertical;
+    }
+
+    .comment-form .submit-btn {
+      margin-top: 10px;
+      padding: 8px 12px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .reply-form {
+      margin-top: 10px;
+      margin-left: 40px;
+    }
+
+    .reply-form textarea {
+      width: 100%;
+      height: 60px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      resize: vertical;
+    }
+
+    .reply-form .submit-btn {
+      margin-top: 5px;
+      padding: 6px 10px;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Compact UI */
+    @media screen and (max-width: 600px) {
+      .reply {
+        margin-left: 20px;
+      }
+
+      .reply-form {
+        margin-left: 30px;
+      }
+    }
+
+    /* Comment Button */
+    .comment-form button {
+      background-color: #007bff;
+      color: #fff;
+    }
   </style>
 </head>
+
 <body>
   <header>
     <h1>S0T12</h1>
-    <p>Hi</p>
   </header>
   <main>
     <% if (article) { %>
-      <div class="article">
-        <h2 class="article-title"><%- article.title %></h2>
-        <% let paragraphs = article.text.split(/(@Code[\s\S]*?@Code|@Image\s*[^@\n]*)/gm); %>
-        <% for (let i = 0; i < paragraphs.length; i++) { %>
-          <% let paragraph = paragraphs[i].trim(); %>
-          <% if (paragraph.startsWith('@Code')) { %>
-            <div class="code-block-container">
-              <code class="code-block"><%- paragraph.replace(/@Code\s*/g, '') %></code>
-            </div>
-          <% } else if (paragraph.startsWith('@Image')) { %>
-            <% let imageUrl = paragraph.replace('@Image', '').trim(); %>
-            <div class="image-container">
-              <img class="article-image" src="<%- imageUrl %>" alt="Article Image">
-            </div>
-          <% } else { %>
-            <p><%- paragraph.replace(/\n/g, '<br>').replace(/  /g, '&nbsp;&nbsp;') %></p>
-          <% } %>
-        <% } %>
+    <div class="article">
+      <h2 class="article-title"><%- article.title %></h2>
+      <% let paragraphs = article.text.split("\n\n"); %>
+      <% paragraphs.forEach((paragraph) => { %>
+      <% if (paragraph.startsWith("@Code")) { %>
+      <div class="code-block-container">
+        <code class="code-block"><%- paragraph.replace("@Code", "").trim() %></code>
       </div>
+      <% } else if (paragraph.startsWith("@Image")) { %>
+      <% let imageUrl = paragraph.replace("@Image", "").trim(); %>
+      <div class="image-container">
+        <img class="article-image" src="<%- imageUrl %>" alt="Article Image" />
+      </div>
+      <% } else { %>
+      <p><%- paragraph %></p>
+      <% } %>
+      <% }); %>
+    </div>
+
+    <div class="comments-section">
+      <h3>Comments</h3>
+      <div id="comments-container"></div>
+      <div class="comment-form">
+        <textarea id="comment-textarea" name="commentText" rows="2" maxlength="255"
+          placeholder="Write a comment"></textarea>
+        <button class="submit-btn" id="submit-comment-btn" type="button">Comment</button>
+      </div>
+    </div>
+
     <% } else { %>
-      <p>No article found!</p>
+    <p>No article found!</p>
     <% } %>
   </main>
   <footer></footer>
 
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const articleId = '<%= article ? article.id : "" %>';
-      if (articleId) {
-        fetch(`/articles/${articleId}`)
-          .then(response => response.json())
-          .then(data => {
-            const article = data.article;
-            const articleTitleElement = document.querySelector('.article-title');
-            const articleTextElement = document.querySelector('.article-text');
+   <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const parentIdMap = new Map();
 
-            if (articleTitleElement) {
-              articleTitleElement.textContent = article.title;
-            }
+      const getCookie = (cname) => {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.startsWith(cname + "=")) {
+            return cookie.substring(cname.length + 1);
+          }
+        }
+        return "";
+      };
 
-            if (articleTextElement) {
-              articleTextElement.innerHTML = article.text;
-            }
-          })
-          .catch(error => console.log(error));
+      const articleId = "<%- article ? article.id : '' %>";
+
+      const postId = parseInt(articleId, 10);
+      if (isNaN(postId)) {
+        console.log("postId is not valid!");
       }
+      const authToken = getCookie("token");
+      const commentsContainer = document.getElementById("comments-container");
+
+      const fetchComments = () => {
+        fetch(`/comments/post/${postId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            renderComments(data);
+          })
+          .catch((error) => console.log(error));
+      };
+
+      const createComment = (text) => {
+          fetch(`/comments`, {
+            method: "POST",
+            body: JSON.stringify({ text: text, postId: postId }),
+            headers: {
+              "Content-Type": "application/json",
+              cookie: authToken,
+              Authorization: `Bearer ${authToken}`,
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              fetchComments();
+            })
+            .catch((error) => console.log(error));
+      };
+
+
+      const updateComment = (commentId, text) => {
+        fetch(`/comments/${commentId}`, {
+          method: "PATCH",
+          body: JSON.stringify({ text: text }),
+          headers: {
+            "Content-Type": "application/json",
+            cookie: authToken,
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const commentElement = document.getElementById(`comment-${commentId}`);
+            const commentTextElement = commentElement.querySelector(".comment-text");
+            commentTextElement.textContent = data.text;
+          })
+          .catch((error) => console.log(error));
+      };
+
+      const deleteComment = (commentId) => {
+        fetch(`/comments/${commentId}`, {
+          method: "DELETE",
+          headers: {
+            cookie: authToken,
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+          .then((response) => {
+            console.log('Comment deleted successfully!', response);
+            fetchComments();
+            parentIdMap.delete(commentId);
+          })
+          .catch((error) => console.log(error));
+      };
+
+      const createReply = (parentId, text) => {
+        fetch(`/comments/${parentId}/replies`, {
+          method: "POST",
+          body: JSON.stringify({ text: text, postId: postId, parentId: parentId }),
+          headers: {
+            "Content-Type": "application/json",
+            cookie: authToken,
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('Reply created successfully!');
+            fetchComments();
+            parentIdMap.delete(replyId);
+          })
+          .catch((error) => console.log(error));
+      };
+
+      const updateReply = (replyId, text) => {
+        fetch(`/comments/${replyId}`, {
+          method: "PATCH",
+          body: JSON.stringify({ text: text }),
+          headers: {
+            "Content-Type": "application/json",
+            cookie: authToken,
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const replyElement = document.getElementById(`comment-${replyId}`);
+            const replyTextElement = replyElement.querySelector(".reply-text");
+            replyTextElement.textContent = data.text;
+          })
+          .catch((error) => console.log(error));
+      };
+
+      const deleteReply = (replyId) => {
+        fetch(`/comments/${replyId}`, {
+          method: "DELETE",
+          headers: {
+            cookie: authToken,
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+          .then((response) => {
+            console.log('Reply deleted successfully!');
+            fetchComments();
+          })
+          .catch((error) => console.log(error));
+      };
+
+      const likeComment = (commentId) => {
+        fetch(`/comments/${commentId}/like`, {
+          method: "POST",
+          headers: {
+            cookie: authToken,
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const commentElement = document.getElementById(`comment-${commentId}`);
+            const likeCountElement = commentElement.querySelector(".like-count");
+            likeCountElement.textContent = data.likes;
+          })
+          .catch((error) => console.log(error));
+      };
+
+      const unlikeComment = (commentId) => {
+        fetch(`/comments/${commentId}/unlike`, {
+          method: "POST",
+          headers: {
+            cookie: authToken,
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const commentElement = document.getElementById(`comment-${commentId}`);
+            const likeCountElement = commentElement.querySelector(".like-count");
+            likeCountElement.textContent = data.likes;
+          })
+          .catch((error) => console.log(error));
+      };
+
+      const likeReply = (replyId) => {
+        fetch(`/comments/${replyId}/like`, {
+          method: "POST",
+          headers: {
+            cookie: authToken,
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const replyElement = document.getElementById(`comment-${replyId}`);
+            const likeCountElement = replyElement.querySelector(".like-count");
+            likeCountElement.textContent = data.likes;
+          })
+          .catch((error) => console.log(error));
+      };
+
+      const unlikeReply = (replyId) => {
+        fetch(`/comments/${replyId}/unlike`, {
+          method: "POST",
+          headers: {
+            cookie: authToken,
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const replyElement = document.getElementById(`comment-${replyId}`);
+            const likeCountElement = replyElement.querySelector(".like-count");
+            likeCountElement.textContent = data.likes;
+          })
+          .catch((error) => console.log(error));
+      };
+
+      const handleCommentSubmit = () => {
+        const commentTextarea = document.getElementById("comment-textarea");
+        const commentText = commentTextarea.value.trim();
+        if (commentText) {
+          createComment(commentText);
+          commentTextarea.value = "";
+        }
+      };
+
+      const handleEditButtonClick = (event, commentId) => {
+        const commentElement = document.getElementById(`comment-${commentId}`);
+        const commentTextElement = commentElement.querySelector(".comment-text");
+        const editForm = commentElement.querySelector(".edit-form");
+
+        commentTextElement.style.display = "none";
+        editForm.style.display = "block";
+      };
+
+      const handleSaveButtonClick = (event, commentId) => {
+        const commentElement = document.getElementById(`comment-${commentId}`);
+
+        if (commentElement) {
+          const commentTextElement = commentElement.querySelector(".comment-text");
+          const editForm = commentElement.querySelector(".edit-form");
+          const editedText = editForm.querySelector("textarea").value.trim();
+
+          if (editedText) {
+            updateComment(commentId, editedText);
+            commentTextElement.textContent = editedText;
+            commentTextElement.style.display = "block";
+            editForm.style.display = "none";
+          }
+        } else {
+          console.error(`Comment element with ID "comment-${commentId}" not found.`);
+        }
+      };
+
+      const handleDeleteButtonClick = (event, commentId) => {
+        if (confirm("Are you sure you want to delete this comment?")) {
+          deleteComment(commentId);
+        }
+      };
+
+      const handleReplyButtonClick = (event, commentId) => {
+        const commentElement = document.getElementById(`comment-${commentId}`);
+        const replyForm = commentElement.querySelector(".reply-form");
+        const replyTextarea = replyForm.querySelector("textarea");
+
+        replyForm.style.display = "block";
+        replyTextarea.focus();
+      };
+
+      const handleReplySubmit = (event, commentId) => {
+        const commentElement = document.getElementById(`comment-${commentId}`);
+        const replyForm = commentElement.querySelector(".reply-form");
+        const replyTextarea = replyForm.querySelector("textarea");
+        const replyText = replyTextarea.value.trim();
+
+        if (replyText) {
+          createReply(commentId, replyText);
+          replyTextarea.value = "";
+          replyForm.style.display = "none";
+        }
+      };
+
+      const handleReplyEditButtonClick = (event, replyId) => {
+        const replyElement = document.getElementById(`comment-${replyId}`);
+        const replyTextElement = replyElement.querySelector(".reply-text");
+        const editForm = replyElement.querySelector(".edit-form");
+
+        replyTextElement.style.display = "none";
+        editForm.style.display = "block";
+      };
+
+      const handleReplySaveButtonClick = (event, replyId) => {
+        const replyElement = document.getElementById(`comment-${replyId}`);
+        const replyTextElement = replyElement.querySelector(".reply-text");
+        const editForm = replyElement.querySelector(".edit-form");
+        const editedText = editForm.querySelector("textarea").value.trim();
+
+        if (editedText) {
+          updateReply(replyId, editedText);
+          replyTextElement.textContent = editedText;
+          replyTextElement.style.display = "block";
+          editForm.style.display = "none";
+        }
+      };
+
+      const handleReplyDeleteButtonClick = (event, replyId) => {
+        if (confirm("Are you sure you want to delete this reply?")) {
+          deleteReply(replyId);
+        }
+      };
+
+      const handleLikeCommentClick = (event, commentId) => {
+        const likeButton = event.target;
+        const likeCountElement = likeButton.nextSibling;
+        if (likeButton.classList.contains("unliked")) {
+          likeComment(commentId);
+          likeButton.classList.remove("unliked");
+        } else {
+          unlikeComment(commentId);
+          likeButton.classList.add("unliked");
+        }
+      };
+
+      const handleLikeReplyClick = (event, replyId) => {
+        const likeButton = event.target;
+        const likeCountElement = likeButton.nextSibling;
+        if (likeButton.classList.contains("unliked")) {
+          likeReply(replyId);
+          likeButton.classList.remove("unliked");
+        } else {
+          unlikeReply(replyId);
+          likeButton.classList.add("unliked");
+        }
+      };
+
+      const getCommentElement = (comment) => {
+        const commentElement = document.createElement("div");
+        commentElement.id = `comment-${comment.id}`;
+        commentElement.classList.add("comment");
+
+        const commentHeader = document.createElement("div");
+        commentHeader.classList.add("comment-header");
+        commentElement.appendChild(commentHeader);
+
+        const commentAuthor = document.createElement("p");
+        commentAuthor.classList.add("comment-author");
+        commentAuthor.textContent = comment.author;
+        commentHeader.appendChild(commentAuthor);
+
+        const commentDate = document.createElement("p");
+        commentDate.classList.add("comment-date");
+        commentDate.textContent = `Posted on ${comment.createdAt ? new Date(comment.createdAt).toLocaleString() : ''}`;
+        commentHeader.appendChild(commentDate);
+
+        const commentText = document.createElement("p");
+        commentText.classList.add("comment-text");
+        commentText.textContent = comment.text;
+        commentElement.appendChild(commentText);
+
+        const commentVotes = document.createElement("div");
+        commentVotes.classList.add("comment-votes");
+        commentElement.appendChild(commentVotes);
+
+        const likeButton = document.createElement("button");
+        likeButton.classList.add("like-btn");
+        likeButton.classList.add(comment.likes > 0 ? "liked" : "unliked");
+        likeButton.textContent = comment.likes > 0 ? 'Unlike' : 'Like';
+        likeButton.addEventListener("click", (event) => handleLikeCommentClick(event, comment.id));
+        commentVotes.append(likeButton);
+
+        const likeCount = document.createElement("span");
+        likeCount.classList.add("like-count");
+        likeCount.textContent = comment.likes;
+        commentVotes.appendChild(likeCount);
+
+        const commentActions = document.createElement("div");
+        commentActions.classList.add("comment-actions");
+        commentElement.appendChild(commentActions);
+
+        const editForm = document.createElement("form");
+        editForm.classList.add("edit-form");
+        commentActions.appendChild(editForm);
+
+        const editTextarea = document.createElement("textarea");
+        editTextarea.rows = "1";
+        editTextarea.maxLength = "255";
+        editTextarea.value = comment.text;
+        editForm.appendChild(editTextarea);
+
+        const saveButton = document.createElement("button");
+        saveButton.classList.add("submit-btn");
+        saveButton.type = "submit";
+        saveButton.textContent = "Save";
+        editForm.appendChild(saveButton);
+
+        const editButton = document.createElement("button");
+        editButton.classList.add("edit-btn", "action-btn");
+        editButton.textContent = "Edit";
+        editButton.addEventListener("click", (event) => handleEditButtonClick(event, comment.id));
+        commentActions.appendChild(editButton);
+
+        const deleteButton = document.createElement("button");
+        deleteButton.classList.add("delete-btn", "action-btn");
+        deleteButton.textContent = "Delete";
+        deleteButton.addEventListener("click", (event) => handleDeleteButtonClick(event, comment.id));
+        commentActions.appendChild(deleteButton);
+
+        const replyButton = document.createElement("button");
+        replyButton.classList.add("reply-btn", "action-btn");
+        replyButton.textContent = "Reply";
+        replyButton.addEventListener("click", (event) => handleReplyButtonClick(event, comment.id));
+        commentActions.appendChild(replyButton);
+
+        const replyForm = document.createElement("div");
+        replyForm.classList.add("reply-form");
+        replyForm.style.display = "none";
+        commentElement.appendChild(replyForm);
+
+        const replyTextarea = document.createElement("textarea");
+        replyTextarea.rows = "1";
+        replyTextarea.maxLength = "255";
+        replyTextarea.placeholder = "Write a reply";
+        replyForm.appendChild(replyTextarea);
+
+        const createReplyButton = document.createElement("button");
+        createReplyButton.classList.add("submit-btn");
+        createReplyButton.textContent = "Reply";
+        createReplyButton.addEventListener("click", (event) => handleReplySubmit(event, comment.id));
+        replyForm.appendChild(createReplyButton);
+
+        const repliesContainer = document.createElement("div");
+        repliesContainer.classList.add("replies-container");
+        commentElement.appendChild(repliesContainer);
+
+        editForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const editedText = editForm.querySelector("textarea").value.trim();
+
+          if (editedText) {
+            handleSaveButtonClick(event, comment.id);
+          }
+        });
+
+        comment.replies.forEach((reply) => {
+          const replyElement = document.createElement("div");
+          replyElement.id = `comment-${reply.id}`;
+          replyElement.classList.add("comment", "reply");
+
+          const replyHeader = document.createElement("div");
+          replyHeader.classList.add("reply-header");
+          replyElement.appendChild(replyHeader);
+
+          const replyAuthor = document.createElement("p");
+          replyAuthor.classList.add("reply-author");
+          replyAuthor.textContent = reply.author;
+          replyHeader.appendChild(replyAuthor);
+
+          const replyDate = document.createElement("p");
+          replyDate.classList.add("reply-date");
+          replyDate.textContent = `Posted on ${reply.createdAt ? new Date(reply.createdAt).toLocaleString() : ''}`;
+          replyHeader.appendChild(replyDate);
+
+          const replyText = document.createElement("p");
+          replyText.classList.add("reply-text");
+          replyText.textContent = reply.text;
+          replyElement.appendChild(replyText);
+
+          const replyVotes = document.createElement("div");
+          replyVotes.classList.add("reply-votes");
+          replyElement.appendChild(replyVotes);
+
+          const replyLikeButton = document.createElement("button");
+          replyLikeButton.classList.add("like-btn");
+          replyLikeButton.classList.add(reply.likes > 0 ? "liked" : "unliked");
+          replyLikeButton.textContent = reply.likes > 0 ? 'Unlike' : 'Like';
+          replyLikeButton.addEventListener("click", (event) => handleLikeReplyClick(event, reply.id));
+          replyVotes.append(replyLikeButton);
+
+          const replyLikeCount = document.createElement("span");
+          replyLikeCount.classList.add("like-count");
+          replyLikeCount.textContent = reply.likes;
+          replyVotes.appendChild(replyLikeCount);
+
+          const replyActions = document.createElement("div");
+          replyActions.classList.add("reply-actions");
+          replyElement.appendChild(replyActions);
+
+          const replyEditForm = document.createElement("form");
+          replyEditForm.classList.add("edit-form");
+          replyActions.appendChild(replyEditForm);
+
+          const replyEditTextarea = document.createElement("textarea");
+          replyEditTextarea.rows = "1";
+          replyEditTextarea.maxLength = "255";
+          replyEditTextarea.value = reply.text;
+          replyEditForm.appendChild(replyEditTextarea);
+
+          const replySaveButton = document.createElement("button");
+          replySaveButton.classList.add("submit-btn");
+          replySaveButton.textContent = "Save";
+          replySaveButton.addEventListener("click", (event) => handleReplySaveButtonClick(event, reply.id));
+          replyActions.appendChild(replySaveButton);
+
+          const replyEditButton = document.createElement("button");
+          replyEditButton.classList.add("edit-btn", "action-btn");
+          replyEditButton.textContent = "Edit";
+          replyEditButton.addEventListener("click", (event) => handleReplyEditButtonClick(event, reply.id));
+          replyActions.appendChild(replyEditButton);
+
+          replyEditButton.addEventListener("click", () => {
+            replyTextElement.style.display = "none";
+            editForm.style.display = "block";
+            saveButton.style.display = "block";
+          });
+
+          const replyDeleteButton = document.createElement("button");
+          replyDeleteButton.classList.add("delete-btn", "action-btn");
+          replyDeleteButton.textContent = "Delete";
+          replyDeleteButton.addEventListener("click", (event) => handleReplyDeleteButtonClick(event, reply.id));
+          replyActions.appendChild(replyDeleteButton);
+
+          repliesContainer.appendChild(replyElement);
+        });
+
+        return commentElement;
+      };
+
+      const renderComments = (comments) => {
+        commentsContainer.innerHTML = null;
+        parentIdMap.clear();
+
+        const topLevelComments = comments.filter((comment) => !comment.parentCommentId);
+        topLevelComments.forEach((comment) => {
+          const commentElement = getCommentElement(comment);
+          commentsContainer.appendChild(commentElement);
+
+          parentIdMap.set(comment.id, commentElement);
+        });
+
+        comments.forEach((comment) => {
+          const parentElement = parentIdMap.get(comment.parentCommentId);
+          if (parentElement) {
+            const repliesContainer = parentElement.querySelector(".replies-container");
+            const replyElement = getCommentElement(comment);
+            repliesContainer.appendChild(replyElement);
+
+            parentIdMap.set(comment.id, replyElement);
+          }
+        });
+      };
+
+      fetchComments();
+
+      const submitCommentBtn = document.getElementById("submit-comment-btn");
+      submitCommentBtn.addEventListener("click", handleCommentSubmit);
     });
   </script>
 </body>
+
 </html>

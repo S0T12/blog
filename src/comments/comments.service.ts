@@ -207,7 +207,7 @@ export class CommentsService {
     return this._commentEntity.save(comment);
   }
 
-  async remove(id: number) {
+  async remove(id: number, username: string) {
     const comment = await this._commentEntity.findOne({
       where: { id },
       relations: ['replies'],
@@ -215,6 +215,12 @@ export class CommentsService {
 
     if (!comment) {
       throw new NotFoundException('Comment not found');
+    }
+
+    if (comment.author.username !== username) {
+      throw new UnauthorizedException(
+        'You are not authorized to delete this comment',
+      );
     }
 
     if (comment.replies.length > 0) {

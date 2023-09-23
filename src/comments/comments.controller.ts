@@ -106,8 +106,18 @@ export class CommentsController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this._commentsService.remove(+id);
+  async remove(@Param('id') id: string, @Headers('cookie') cookie: string) {
+    const authToken = this._authService.getAuthTokenFromCookie(cookie);
+
+    try {
+      const payload = this._jwtService.verifyAsync(authToken, {
+        secret: process.env.SECRET,
+      });
+      const { username } = await payload;
+      return this._commentsService.remove(+id, username);
+    } catch (error) {
+      throw new UnauthorizedException('Remove is failed');
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -129,7 +139,7 @@ export class CommentsController {
       const likes = comment.likes;
       return { likes };
     } catch (error) {
-      throw new UnauthorizedException('Invalid token');
+      throw new UnauthorizedException('Like is failed');
     }
   }
 
@@ -152,7 +162,7 @@ export class CommentsController {
       const likes = comment.likes;
       return { likes };
     } catch (error) {
-      throw new UnauthorizedException('Invalid token');
+      throw new UnauthorizedException('Dislike is filed');
     }
   }
 }

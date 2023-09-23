@@ -324,6 +324,20 @@
       cursor: pointer;
     }
 
+    .image-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .error-container {
+      color: red;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
     @media screen and (max-width: 600px) {
       .reply {
         margin-left: 20px;
@@ -367,15 +381,16 @@
         <% } %>
       </div>
 
-    <div class="comments-section">
-      <h3>Comments</h3>
-      <div id="comments-container"></div>
-      <div class="comment-form">
-        <textarea id="comment-textarea" name="commentText" rows="2" maxlength="255"
-          placeholder="Write a comment"></textarea>
-        <button class="submit-btn" id="submit-comment-btn" type="button">Comment</button>
+      <div class="comments-section">
+        <h3>Comments</h3>
+        <div id="comments-container"></div>
+        <div class="comment-form">
+          <textarea id="comment-textarea" name="commentText" rows="2" maxlength="255"
+            placeholder="Write a comment"></textarea>
+          <button class="submit-btn" id="submit-comment-btn" type="button">Comment</button>
+        </div>
+        <div id="error-container" class="error-container"></div>
       </div>
-    </div>
 
     <% } else { %>
     <p>No post found!</p>
@@ -398,6 +413,8 @@
         return "";
       };
 
+      const errorContainer = document.getElementById("error-container");
+
       const ID = "<%- post ? post.id : '' %>";
 
       const postId = parseInt(ID, 10);
@@ -413,7 +430,10 @@
           .then((data) => {
             renderComments(data);
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            errorContainer.innerText = error.message;
+          });
       };
 
       const createComment = (text) => {
@@ -430,7 +450,10 @@
             .then((data) => {
               fetchComments();
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+              console.log(error);
+              errorContainer.innerText = error.message;
+            });
       };
 
 
@@ -450,7 +473,10 @@
             const commentTextElement = commentElement.querySelector(".comment-text");
             commentTextElement.textContent = data.text;
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            errorContainer.innerText = error.message;
+          });
       };
 
       const deleteComment = (commentId) => {
@@ -466,7 +492,10 @@
             fetchComments();
             parentIdMap.delete(commentId);
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            errorContainer.innerText = error.message;
+          });
       };
 
       const createReply = (parentId, text) => {
@@ -485,7 +514,10 @@
             fetchComments();
             parentIdMap.delete(replyId);
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            errorContainer.innerText = error.message;
+          });
       };
 
       const updateReply = (replyId, text) => {
@@ -504,7 +536,10 @@
             const replyTextElement = replyElement.querySelector(".reply-text");
             replyTextElement.textContent = data.text;
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            errorContainer.innerText = error.message;
+          });
       };
 
       const deleteReply = (replyId) => {
@@ -519,7 +554,10 @@
             console.log('Reply deleted successfully!');
             fetchComments();
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            errorContainer.innerText = error.message;
+          });
       };
 
       const likeComment = (commentId) => {
@@ -536,7 +574,10 @@
             const likeCountElement = commentElement.querySelector(".like-count");
             likeCountElement.textContent = data.likes;
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            errorContainer.innerText = error.message;
+          });
       };
 
       const unlikeComment = (commentId) => {
@@ -553,7 +594,10 @@
             const likeCountElement = commentElement.querySelector(".like-count");
             likeCountElement.textContent = data.likes;
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            errorContainer.innerText = error.message;
+          });
       };
 
       const likeReply = (replyId) => {
@@ -570,7 +614,10 @@
             const likeCountElement = replyElement.querySelector(".like-count");
             likeCountElement.textContent = data.likes;
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            errorContainer.innerText = error.message;
+          });
       };
 
       const unlikeReply = (replyId) => {
@@ -587,7 +634,10 @@
             const likeCountElement = replyElement.querySelector(".like-count");
             likeCountElement.textContent = data.likes;
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            errorContainer.innerText = error.message;
+          });
       };
 
       const handleCommentSubmit = () => {

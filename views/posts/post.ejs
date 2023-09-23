@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Article</title>
+  <title>Post</title>
   <link rel="icon" href="images/icon.png" />
   <style>
     /* Header */
@@ -25,8 +25,8 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    /* Article */
-    .article {
+    /* Post */
+    .post {
       margin-bottom: 20px;
       padding: 20px;
       border-radius: 5px;
@@ -34,14 +34,14 @@
       background-color: #fff;
     }
 
-    .article-title {
+    .post-title {
       font-size: 24px;
       font-weight: bold;
       margin-bottom: 10px;
       text-align: center;
     }
 
-    .article-image {
+    .post-image {
       display: block;
       max-width: 100%;
       height: auto;
@@ -52,6 +52,27 @@
     p {
       line-height: 1.6;
       margin-bottom: 15px;
+    }
+
+    .code-block {
+      font-family: Consolas, monospace;
+      white-space: pre-wrap;
+      color: #ebebeb;
+      background-color: #252525;
+      padding: 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .code-block-container {
+      background-color: #252525;
+      padding: 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin-top: 20px;
+      margin-bottom: 20px;
     }
 
     /* Comments Section */
@@ -327,25 +348,26 @@
     <h1>S0T12</h1>
   </header>
   <main>
-    <% if (article) { %>
-    <div class="article">
-      <h2 class="article-title"><%- article.title %></h2>
-      <% let paragraphs = article.text.split("\n\n"); %>
-      <% paragraphs.forEach((paragraph) => { %>
-      <% if (paragraph.startsWith("@Code")) { %>
-      <div class="code-block-container">
-        <code class="code-block"><%- paragraph.replace("@Code", "").trim() %></code>
+    <% if (post) { %>
+      <div class="post">
+        <h2 class="post-title"><%- post.title %></h2>
+        <% let paragraphs = post && post.text ? post.text.split(/(@Code[\s\S]*?@Code|@Image\s*[^@\n]*)/gm) : []; %>
+        <% for (let i = 0; i < paragraphs.length; i++) { %>
+          <% let paragraph = paragraphs[i].trim(); %>
+          <% if (paragraph.startsWith('@Code')) { %>
+            <div class="code-block-container">
+              <code class="code-block"><%- paragraph.replace(/@Code\s*/g, '') %></code>
+            </div>
+          <% } else if (paragraph.startsWith('@Image')) { %>
+            <% let imageUrl = paragraph.replace('@Image', '').trim(); %>
+            <div class="image-container">
+              <img class="post-image" src="<%- imageUrl %>" alt="">
+            </div>
+          <% } else { %>
+            <p><%- paragraph.replace(/\n/g, '<br>').replace(/  /g, '&nbsp;&nbsp;') %></p>
+          <% } %>
+        <% } %>
       </div>
-      <% } else if (paragraph.startsWith("@Image")) { %>
-      <% let imageUrl = paragraph.replace("@Image", "").trim(); %>
-      <div class="image-container">
-        <img class="article-image" src="<%- imageUrl %>" alt="Article Image" />
-      </div>
-      <% } else { %>
-      <p><%- paragraph %></p>
-      <% } %>
-      <% }); %>
-    </div>
 
     <div class="comments-section">
       <h3>Comments</h3>
@@ -358,7 +380,7 @@
     </div>
 
     <% } else { %>
-    <p>No article found!</p>
+    <p>No post found!</p>
     <% } %>
   </main>
   <footer></footer>
@@ -378,9 +400,9 @@
         return "";
       };
 
-      const articleId = "<%- article ? article.id : '' %>";
+      const ID = "<%- post ? post.id : '' %>";
 
-      const postId = parseInt(articleId, 10);
+      const postId = parseInt(ID, 10);
       if (isNaN(postId)) {
         console.log("postId is not valid!");
       }

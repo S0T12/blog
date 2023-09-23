@@ -33,7 +33,7 @@
       margin-top: 0;
     }
 
-    .project {
+    .post {
       margin-bottom: 20px;
       padding: 20px;
       border-radius: 5px;
@@ -41,14 +41,14 @@
       background-color: #fff;
     }
 
-    .project-title {
+    .post-title {
       font-size: 20px;
       font-weight: bold;
       margin-bottom: 10px;
       color: #333;
     }
 
-    .project-description {
+    .post-description {
       font-size: 16px;
       color: #888;
       display: -webkit-box;
@@ -65,10 +65,10 @@
   </header>
   <main>
     <h1>Articles</h1>
-    <% articles.forEach(article => { %>
-      <div class="project">
-        <a href="/articles/<%= article.id %>"><h2 class="project-title"><%= article.title %></h2></a>
-        <p class="project-description"><%= article.text %></p>
+    <% posts.forEach(post => { %>
+      <div class="post">
+        <a href="/posts/<%= post.id %>"><h2 class="post-title"><%= post.title %></h2></a>
+        <p class="post-description"><%= post.text %></p>
       </div>
     <% }) %>
   </main>

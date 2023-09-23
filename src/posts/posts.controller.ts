@@ -51,7 +51,6 @@ export class PostsController {
 
   @Get()
   async findAll() {
-    console.log(`posts.controller.ts, 55, test >>>>`);
     const posts = await this._postsService.findAll();
     return { posts };
   }

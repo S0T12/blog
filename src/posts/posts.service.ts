@@ -62,6 +62,7 @@ export class PostsService {
         'commentAuthor.username',
         'replies',
         'replyAuthor.username',
+        'post.likes',
       ])
       .getMany();
   }

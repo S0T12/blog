@@ -422,6 +422,12 @@
         console.log("postId is not valid!");
       }
       const authToken = getCookie("token");
+
+      if(!authToken) {
+        console.log('authToken >>>>', authToken);
+        errorContainer.innerHTML = 'Your not logging into account';
+      }
+
       const commentsContainer = document.getElementById("comments-container");
 
       const fetchComments = () => {
@@ -432,7 +438,7 @@
           })
           .catch((error) => {
             console.log(error);
-            errorContainer.innerText = error.message;
+            errorContainer.innerHTML = error.message;
           });
       };
 
@@ -452,7 +458,7 @@
             })
             .catch((error) => {
               console.log(error);
-              errorContainer.innerText = error.message;
+              errorContainer.innerHTML = error.message;
             });
       };
 
@@ -475,7 +481,7 @@
           })
           .catch((error) => {
             console.log(error);
-            errorContainer.innerText = error.message;
+            errorContainer.innerHTML = error.message;
           });
       };
 
@@ -494,7 +500,7 @@
           })
           .catch((error) => {
             console.log(error);
-            errorContainer.innerText = error.message;
+            errorContainer.innerHTML = error.message;
           });
       };
 
@@ -516,7 +522,7 @@
           })
           .catch((error) => {
             console.log(error);
-            errorContainer.innerText = error.message;
+            errorContainer.innerHTML = error.message;
           });
       };
 
@@ -538,7 +544,7 @@
           })
           .catch((error) => {
             console.log(error);
-            errorContainer.innerText = error.message;
+            errorContainer.innerHTML = error.message;
           });
       };
 
@@ -556,7 +562,7 @@
           })
           .catch((error) => {
             console.log(error);
-            errorContainer.innerText = error.message;
+            errorContainer.innerHTML = error.message;
           });
       };
 
@@ -576,7 +582,7 @@
           })
           .catch((error) => {
             console.log(error);
-            errorContainer.innerText = error.message;
+            errorContainer.innerHTML = error.message;
           });
       };
 
@@ -596,7 +602,7 @@
           })
           .catch((error) => {
             console.log(error);
-            errorContainer.innerText = error.message;
+            errorContainer.innerHTML = error.message;
           });
       };
 
@@ -616,7 +622,7 @@
           })
           .catch((error) => {
             console.log(error);
-            errorContainer.innerText = error.message;
+            errorContainer.innerHTML = error.message;
           });
       };
 
@@ -636,11 +642,14 @@
           })
           .catch((error) => {
             console.log(error);
-            errorContainer.innerText = error.message;
+            errorContainer.innerHTML = error.message;
           });
       };
 
       const handleCommentSubmit = () => {
+        if(!authToken) {
+          errorContainer.innerText = 'First, log in to your account.';
+        }
         const commentTextarea = document.getElementById("comment-textarea");
         const commentText = commentTextarea.value.trim();
         if (commentText) {
@@ -650,6 +659,9 @@
       };
 
       const handleEditButtonClick = (event, commentId) => {
+        if(!authToken) {
+          errorContainer.innerText = 'First, log in to your account.';
+        }
         const commentElement = document.getElementById(`comment-${commentId}`);
         const commentTextElement = commentElement.querySelector(".comment-text");
         const editForm = commentElement.querySelector(".edit-form");
@@ -659,6 +671,10 @@
       };
 
       const handleSaveButtonClick = (event, commentId) => {
+        if(!authToken) {
+          errorContainer.innerText = 'First, log in to your account.';
+        }
+
         const commentElement = document.getElementById(`comment-${commentId}`);
 
         if (commentElement) {
@@ -678,12 +694,20 @@
       };
 
       const handleDeleteButtonClick = (event, commentId) => {
+        if(!authToken) {
+          errorContainer.innerText = 'First, log in to your account.';
+        }
+
         if (confirm("Are you sure you want to delete this comment?")) {
           deleteComment(commentId);
         }
       };
 
       const handleReplyButtonClick = (event, commentId) => {
+        if(!authToken) {
+          errorContainer.innerText = 'First, log in to your account.';
+        }
+
         const commentElement = document.getElementById(`comment-${commentId}`);
         const replyForm = commentElement.querySelector(".reply-form");
         const replyTextarea = replyForm.querySelector("textarea");
@@ -693,6 +717,10 @@
       };
 
       const handleReplySubmit = (event, commentId) => {
+        if(!authToken) {
+          errorContainer.innerText = 'First, log in to your account.';
+        }
+
         const commentElement = document.getElementById(`comment-${commentId}`);
         const replyForm = commentElement.querySelector(".reply-form");
         const replyTextarea = replyForm.querySelector("textarea");
@@ -706,6 +734,10 @@
       };
 
       const handleReplyEditButtonClick = (event, replyId) => {
+        if(!authToken) {
+          errorContainer.innerText = 'First, log in to your account.';
+        }
+
         const replyElement = document.getElementById(`comment-${replyId}`);
         const replyTextElement = replyElement.querySelector(".reply-text");
         const editForm = replyElement.querySelector(".edit-form");
@@ -715,6 +747,10 @@
       };
 
       const handleReplySaveButtonClick = (event, replyId) => {
+        if(!authToken) {
+          errorContainer.innerText = 'First, log in to your account.';
+        }
+        
         const replyElement = document.getElementById(`comment-${replyId}`);
         const replyTextElement = replyElement.querySelector(".reply-text");
         const editForm = replyElement.querySelector(".edit-form");
@@ -729,12 +765,20 @@
       };
 
       const handleReplyDeleteButtonClick = (event, replyId) => {
+        if(!authToken) {
+          errorContainer.innerText = 'First, log in to your account.';
+        }
+        
         if (confirm("Are you sure you want to delete this reply?")) {
           deleteReply(replyId);
         }
       };
 
       const handleLikeCommentClick = (event, commentId) => {
+        if(!authToken) {
+          errorContainer.innerText = 'First, log in to your account.';
+        }
+
         const likeButton = event.target;
         const likeCountElement = likeButton.nextSibling;
         if (likeButton.classList.contains("unliked")) {
@@ -747,6 +791,10 @@
       };
 
       const handleLikeReplyClick = (event, replyId) => {
+        if(!authToken) {
+          errorContainer.innerText = 'First, log in to your account.';
+        }
+        
         const likeButton = event.target;
         const likeCountElement = likeButton.nextSibling;
         if (likeButton.classList.contains("unliked")) {

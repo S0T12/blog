@@ -38,7 +38,7 @@ DELETE http://localhost:3000/posts/63
 
 
 ### Get by category
-GET http://localhost:3000/posts/category/articles
+GET http://localhost:3000/posts/category/posts
 
 
 ### Like post

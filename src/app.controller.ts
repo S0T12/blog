@@ -46,7 +46,7 @@ export class AppController {
   @Get('posts')
   @Render('posts/list')
   async getPosts() {
-    const posts = await this.postsService.findAll();
+    const posts = await this.postsService.findByCategory('posts');
     return { posts };
   }
 

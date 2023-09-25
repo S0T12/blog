@@ -33,7 +33,6 @@ export class PostsController {
     @Body() createPostDto: CreatePostDto,
     @Headers('cookie') cookie: string,
   ) {
-    console.log(cookie);
     const authToken = this._authService.getAuthTokenFromCookie(cookie);
     try {
       const payload = this._jwtService.verify(authToken, {
@@ -103,7 +102,6 @@ export class PostsController {
       const payload = this._jwtService.verify(authToken, {
         secret: process.env.SECRET,
       });
-      console.log();
 
       const { username } = payload;
 

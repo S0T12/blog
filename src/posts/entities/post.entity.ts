@@ -2,9 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
 import { CategoryEntity } from '../../categories/entities/category.entity';
@@ -30,8 +33,9 @@ export class PostEntity {
   @Column({ type: 'text', nullable: true })
   images: string[];
 
-  @Column({ type: 'int', default: 0 })
-  likes: number;
+  @ManyToMany(() => UserEntity)
+  @JoinTable()
+  likes: UserEntity[];
 
   @ManyToOne(
     () => CategoryEntity,
@@ -47,4 +51,7 @@ export class PostEntity {
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedAt: Date;
 }

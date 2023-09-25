@@ -96,17 +96,47 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/like')
-  async likePost(@Param('id') id: number) {
-    const post = await this._postsService.likePost(id);
-    const likes = post.likes;
-    return { likes };
+  async likePost(@Param('id') id: number, @Headers('cookie') cookie: string) {
+    const authToken = this._authService.getAuthTokenFromCookie(cookie);
+
+    try {
+      const payload = this._jwtService.verify(authToken, {
+        secret: process.env.SECRET,
+      });
+      console.log();
+
+      const { username } = payload;
+
+      const post = await this._postsService.likePost(id, username);
+
+      const likes = post.likes.length;
+
+      return { likes };
+    } catch (error) {
+      console.log(error);
+      throw new UnauthorizedException('Failed to like the post');
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/unlike')
-  async unlikePost(@Param('id') id: number) {
-    const post = await this._postsService.unlikePost(id);
-    const likes = post.likes;
-    return { likes };
+  async unlikePost(@Param('id') id: number, @Headers('cookie') cookie: string) {
+    const authToken = this._authService.getAuthTokenFromCookie(cookie);
+
+    try {
+      const payload = this._jwtService.verify(authToken, {
+        secret: process.env.SECRET,
+      });
+
+      const { username } = payload;
+
+      const post = await this._postsService.unlikePost(id, username);
+
+      const likes = post.likes.length;
+
+      return { likes };
+    } catch (error) {
+      throw new UnauthorizedException('Failed to unlike the post');
+    }
   }
 }

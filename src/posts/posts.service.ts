@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,6 +10,7 @@ import { PostEntity } from './entities/post.entity';
 import { DeepPartial, Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
 import { CategoriesService } from '../categories/categories.service';
+import { UserEntity } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class PostsService {
@@ -18,7 +23,7 @@ export class PostsService {
 
   async create(createPostDto: CreatePostDto, author: string) {
     const post = this._postEntity.create(
-      createPostDto as DeepPartial<PostEntity>,
+      createPostDto as unknown as DeepPartial<PostEntity>,
     );
 
     const { category } = createPostDto;
@@ -38,7 +43,7 @@ export class PostsService {
     }
     post.category = categoryEntity;
 
-    post.likes = createPostDto.likes || 0;
+    post.likes = [];
 
     return this._postEntity.save(post);
   }
@@ -126,28 +131,52 @@ export class PostsService {
       .getMany();
   }
 
-  async likePost(id: number) {
-    const post = await this.findOne(id);
+  async likePost(id: number, username: string) {
+    const post = await this._postEntity.findOne({
+      where: { id },
+      relations: ['likes'],
+    });
 
     if (!post) {
       throw new NotFoundException('Post not found');
     }
 
-    post.likes = post.likes + 1;
+    const likedByUser = post.likes.find((user) => user.username === username);
+
+    if (likedByUser) {
+      throw new UnauthorizedException('You have already liked this post');
+    }
+
+    const user = await this._usersService.findByUsername(username);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    post.likes.push(user);
 
     return this._postEntity.save(post);
   }
 
-  async unlikePost(id: number) {
-    const post = await this.findOne(id);
+  async unlikePost(id: number, username: string) {
+    const post = await this._postEntity.findOne({
+      where: { id },
+      relations: ['likes'],
+    });
 
     if (!post) {
       throw new NotFoundException('Post not found');
     }
 
-    if (post.likes > 0) {
-      post.likes = post.likes - 1;
+    const likedByUserIndex = post.likes.findIndex(
+      (user) => user.username === username,
+    );
+
+    if (likedByUserIndex === -1) {
+      throw new UnauthorizedException('You have not liked this post');
     }
+
+    post.likes.splice(likedByUserIndex, 1);
 
     return this._postEntity.save(post);
   }

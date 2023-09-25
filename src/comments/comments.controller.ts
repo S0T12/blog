@@ -86,8 +86,6 @@ export class CommentsController {
     @Body() updateCommentDto: UpdateCommentDto,
     @Headers('cookie') cookie: string,
   ) {
-    console.log(`request is here`);
-
     const authToken = this._authService.getAuthTokenFromCookie(cookie);
     const { username } = this._jwtService.decode(authToken) as {
       username: string;

@@ -352,6 +352,28 @@
       background-color: #007bff;
       color: #fff;
     }
+
+    .post-likes .like-btn {
+      font-size: 12px;
+      padding: 4px 8px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    .post-likes .like-btn.unliked {
+      background-color: transparent;
+      color: #007bff;
+      border: 1px solid #007bff;
+    }
+
+    .post-likes .like-count {
+      margin-left: 5px;
+      font-size: 12px;
+      color: #777;
+    }
   </style>
 </head>
 
@@ -379,6 +401,13 @@
             <p><%- paragraph.replace(/\n/g, '<br>').replace(/  /g, '&nbsp;&nbsp;') %></p>
           <% } %>
         <% } %>
+      </div>
+
+      <div class="post-likes">
+        <button class="<%- post.likes > 0 ? 'liked' : 'unliked' %> like-btn" id="like-post-btn">
+          <%- post.likes > 0 ? 'Unlike' : 'Like' %>
+        </button>
+        <span class="like-count"><%- post.likes %></span>
       </div>
 
       <div class="comments-section">
@@ -424,7 +453,6 @@
       const authToken = getCookie("token");
 
       if(!authToken) {
-        console.log('authToken >>>>', authToken);
         errorContainer.innerHTML = 'Your not logging into account';
       }
 
@@ -442,24 +470,68 @@
           });
       };
 
-      const createComment = (text) => {
-          fetch(`/comments`, {
-            method: "POST",
-            body: JSON.stringify({ text: text, postId: postId }),
-            headers: {
-              "Content-Type": "application/json",
-              cookie: authToken,
-              Authorization: `Bearer ${authToken}`,
-            },
+      const likePost = () => {
+        fetch(`/posts/<%- post.id %>/like`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            cookie: authToken,
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const likeCountElement = document.querySelector(".like-count");
+            likeCountElement.textContent = data.likes;
+            const likeButton = document.querySelector(".like-btn");
+            likeButton.classList.remove("unliked");
           })
-            .then((response) => response.json())
-            .then((data) => {
-              fetchComments();
-            })
-            .catch((error) => {
-              console.log(error);
-              errorContainer.innerHTML = error.message;
-            });
+          .catch((error) => {
+            console.log(error);
+            errorContainer.innerHTML = error.message;
+          });
+      };
+
+      const unlikePost = () => {
+        fetch(`/posts/<%- post.id %>/unlike`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            cookie: authToken,
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const likeCountElement = document.querySelector(".like-count");
+            likeCountElement.textContent = data.likes;
+            const likeButton = document.querySelector(".like-btn");
+            likeButton.classList.add("unliked");
+          })
+          .catch((error) => {
+            console.log(error);
+            errorContainer.innerHTML = error.message;
+          });
+      };
+
+      const createComment = (text) => {
+        fetch(`/comments`, {
+          method: "POST",
+          body: JSON.stringify({ text: text, postId: postId }),
+          headers: {
+            "Content-Type": "application/json",
+            cookie: authToken,
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            fetchComments();
+          })
+          .catch((error) => {
+            console.log(error);
+            errorContainer.innerHTML = error.message;
+          });
       };
 
 
@@ -642,8 +714,45 @@
           })
           .catch((error) => {
             console.log(error);
-            errorContainer.innerHTML = error.message;
+            return errorContainer.innerHTML = error.message;
           });
+      };
+
+      const handleLikePostClick = () => {
+        if (!authToken) {
+          errorContainer.innerHTML = "Please log in to like the post";
+          return;
+        }
+
+        const likeButton = document.querySelector(".like-btn");
+
+        if (likeButton.classList.contains("unliked")) {
+          likePost();
+          likeButton.classList.remove("unliked");
+        } else {
+          unlikePost();
+          likeButton.classList.add("unliked");
+        }
+      };
+
+      const likePostBtn = document.getElementById("like-post-btn");
+      likePostBtn.addEventListener("click", handleLikePostClick);
+
+      const handleLikeButtonClick = () => {
+        if (!authToken) {
+          return errorContainer.innerHTML = 'First, log in to your account.';
+        }
+        
+        const likeButtons = document.querySelectorAll(".like-btn");
+        likeButtons.forEach((button) => {
+          if (button.classList.contains("unliked")) {
+            likePost();
+            button.classList.remove("unliked");
+          } else {
+            unlikePost();
+            button.classList.add("unliked");
+          }
+        });
       };
 
       const handleCommentSubmit = () => {

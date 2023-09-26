@@ -82,6 +82,7 @@ export class PostsService {
         'comments.author',
         'comments.replies',
         'comments.replies.author',
+        'likes',
       ],
     });
 

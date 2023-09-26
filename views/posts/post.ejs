@@ -407,14 +407,14 @@
         <button class="<%- post.likes > 0 ? 'liked' : 'unliked' %> like-btn" id="like-post-btn">
           <%- post.likes > 0 ? 'Unlike' : 'Like' %>
         </button>
-        <span class="like-count"><%- post.likes %></span>
+        <span class="like-count"><%- post.likes.length%></span>
       </div>
 
       <div class="comments-section">
         <h3>Comments</h3>
         <div id="comments-container"></div>
         <div class="comment-form">
-          <textarea id="comment-textarea" name="commentText" rows="2" maxlength="255"
+          <textarea id="comment-textarea" name="commentText" rows="1" maxlength="255"
             placeholder="Write a comment"></textarea>
           <button class="submit-btn" id="submit-comment-btn" type="button">Comment</button>
         </div>
@@ -647,7 +647,7 @@
           .then((data) => {
             const commentElement = document.getElementById(`comment-${commentId}`);
             const likeCountElement = commentElement.querySelector(".like-count");
-            likeCountElement.textContent = data.likes;
+            likeCountElement.textContent = data.likes.length;
           })
           .catch((error) => {
             console.log(error);
@@ -667,7 +667,7 @@
           .then((data) => {
             const commentElement = document.getElementById(`comment-${commentId}`);
             const likeCountElement = commentElement.querySelector(".like-count");
-            likeCountElement.textContent = data.likes;
+            likeCountElement.textContent = data.likes.length;
           })
           .catch((error) => {
             console.log(error);
@@ -912,6 +912,8 @@
       };
 
       const getCommentElement = (comment) => {
+        console.log(comment);
+        
         const commentElement = document.createElement("div");
         commentElement.id = `comment-${comment.id}`;
         commentElement.classList.add("comment");

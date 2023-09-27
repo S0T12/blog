@@ -92,7 +92,13 @@ export class CommentsService {
     const topLevelComments: CommentEntity[] = [];
 
     const allComments = await this._commentEntity.find({
-      relations: ['author', 'replies', 'replies.author', 'parentComment'],
+      relations: [
+        'author',
+        'replies',
+        'replies.author',
+        'parentComment',
+        'likes',
+      ],
       order: { createdAt: 'DESC' },
     });
 
@@ -153,7 +159,13 @@ export class CommentsService {
 
     const allComments = await this._commentEntity.find({
       where: { post: { id: postId } },
-      relations: ['author', 'replies', 'replies.author', 'parentComment'],
+      relations: [
+        'author',
+        'replies',
+        'replies.author',
+        'parentComment',
+        'likes',
+      ],
       order: { createdAt: 'DESC' },
     });
 
@@ -169,6 +181,7 @@ export class CommentsService {
       author: comment.author.username,
       createdAt: comment.createdAt,
       updatedAt: comment.updatedAt,
+      likes: comment.likes.length,
       replies: comment.replies
         .filter((reply) => !reply.isApproved)
         .map((reply) => ({

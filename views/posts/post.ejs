@@ -407,14 +407,14 @@
         <button class="<%- post.likes > 0 ? 'liked' : 'unliked' %> like-btn" id="like-post-btn">
           <%- post.likes > 0 ? 'Unlike' : 'Like' %>
         </button>
-        <span class="like-count"><%- post.likes.length%></span>
+        <span class="like-count"><%- post.likes ? post.likes.length : 0 %></span>
       </div>
 
       <div class="comments-section">
         <h3>Comments</h3>
         <div id="comments-container"></div>
         <div class="comment-form">
-          <textarea id="comment-textarea" name="commentText" rows="1" maxlength="255"
+          <textarea id="comment-textarea" name="commentText" rows="2" maxlength="255"
             placeholder="Write a comment"></textarea>
           <button class="submit-btn" id="submit-comment-btn" type="button">Comment</button>
         </div>
@@ -484,7 +484,6 @@
             const likeCountElement = document.querySelector(".like-count");
             likeCountElement.textContent = data.likes;
             const likeButton = document.querySelector(".like-btn");
-            likeButton.classList.remove("unliked");
           })
           .catch((error) => {
             console.log(error);
@@ -506,7 +505,6 @@
             const likeCountElement = document.querySelector(".like-count");
             likeCountElement.textContent = data.likes;
             const likeButton = document.querySelector(".like-btn");
-            likeButton.classList.add("unliked");
           })
           .catch((error) => {
             console.log(error);
@@ -647,7 +645,7 @@
           .then((data) => {
             const commentElement = document.getElementById(`comment-${commentId}`);
             const likeCountElement = commentElement.querySelector(".like-count");
-            likeCountElement.textContent = data.likes.length;
+            likeCountElement.textContent = data.likes;
           })
           .catch((error) => {
             console.log(error);
@@ -667,7 +665,7 @@
           .then((data) => {
             const commentElement = document.getElementById(`comment-${commentId}`);
             const likeCountElement = commentElement.querySelector(".like-count");
-            likeCountElement.textContent = data.likes.length;
+            likeCountElement.textContent = data.likes;
           })
           .catch((error) => {
             console.log(error);
@@ -912,7 +910,6 @@
       };
 
       const getCommentElement = (comment) => {
-        console.log(comment);
         
         const commentElement = document.createElement("div");
         commentElement.id = `comment-${comment.id}`;
@@ -943,14 +940,14 @@
 
         const likeButton = document.createElement("button");
         likeButton.classList.add("like-btn");
-        likeButton.classList.add(comment.likes > 0 ? "liked" : "unliked");
-        likeButton.textContent = comment.likes > 0 ? 'Unlike' : 'Like';
+        likeButton.classList.add(comment.likes.length > 0 ? "liked" : "unliked");
+        likeButton.textContent = comment.likes.length > 0 ? 'Liked' : 'Like';
         likeButton.addEventListener("click", (event) => handleLikeCommentClick(event, comment.id));
         commentVotes.append(likeButton);
 
         const likeCount = document.createElement("span");
         likeCount.classList.add("like-count");
-        likeCount.textContent = comment.likes;
+        likeCount.textContent = comment.likes.length;
         commentVotes.appendChild(likeCount);
 
         const commentActions = document.createElement("div");
@@ -1052,7 +1049,7 @@
           const replyLikeButton = document.createElement("button");
           replyLikeButton.classList.add("like-btn");
           replyLikeButton.classList.add(reply.likes > 0 ? "liked" : "unliked");
-          replyLikeButton.textContent = reply.likes > 0 ? 'Unlike' : 'Like';
+          replyLikeButton.textContent = reply.likes > 0 ? 'Like' : 'Like';
           replyLikeButton.addEventListener("click", (event) => handleLikeReplyClick(event, reply.id));
           replyVotes.append(replyLikeButton);
 

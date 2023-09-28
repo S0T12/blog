@@ -484,6 +484,7 @@
             const likeCountElement = document.querySelector(".like-count");
             likeCountElement.textContent = data.likes;
             const likeButton = document.querySelector(".like-btn");
+            likeButton.classList.remove("unliked");
           })
           .catch((error) => {
             console.log(error);
@@ -505,6 +506,7 @@
             const likeCountElement = document.querySelector(".like-count");
             likeCountElement.textContent = data.likes;
             const likeButton = document.querySelector(".like-btn");
+            likeButton.classList.remove("unliked");
           })
           .catch((error) => {
             console.log(error);
@@ -940,14 +942,14 @@
 
         const likeButton = document.createElement("button");
         likeButton.classList.add("like-btn");
-        likeButton.classList.add(comment.likes.length > 0 ? "liked" : "unliked");
-        likeButton.textContent = comment.likes.length > 0 ? 'Liked' : 'Like';
+        likeButton.classList.add(comment.likes > 0 ? "liked" : "unliked");
+        likeButton.textContent = comment.likes > 0 ? 'Liked' : 'Like';
         likeButton.addEventListener("click", (event) => handleLikeCommentClick(event, comment.id));
         commentVotes.append(likeButton);
 
         const likeCount = document.createElement("span");
         likeCount.classList.add("like-count");
-        likeCount.textContent = comment.likes.length;
+        likeCount.textContent = comment.likes;
         commentVotes.appendChild(likeCount);
 
         const commentActions = document.createElement("div");

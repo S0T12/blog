@@ -506,7 +506,6 @@
             const likeCountElement = document.querySelector(".like-count");
             likeCountElement.textContent = data.likes;
             const likeButton = document.querySelector(".like-btn");
-            likeButton.classList.remove("unliked");
           })
           .catch((error) => {
             console.log(error);

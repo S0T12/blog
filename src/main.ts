@@ -11,7 +11,9 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const port = parseInt(process.env.PORT, 10) || 3000;
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
+  );
   app.useGlobalFilters(new UserExistsFilter());
   app.use(cookieParser());
 

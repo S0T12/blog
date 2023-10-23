@@ -14,7 +14,7 @@ async function bootstrap() {
   const port = parseInt(process.env.PORT, 10) || 3000;
 
   const winstonConfig: winston.LoggerOptions = {
-    transports: [new winston.transports.File({ filename: 'logs.log' })],
+    transports: [new winston.transports.File({ filename: 'logInfo.log' })],
     format: winston.format.combine(
       winston.format.timestamp(),
       winston.format.json(),

@@ -6,10 +6,22 @@ import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as cookieParser from 'cookie-parser';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as winston from 'winston';
+import { WinstonModule } from 'nest-winston';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const port = parseInt(process.env.PORT, 10) || 3000;
+
+  const winstonConfig: winston.LoggerOptions = {
+    transports: [new winston.transports.File({ filename: 'logs.log' })],
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.json(),
+    ),
+  };
+
+  app.useLogger(WinstonModule.createLogger(winstonConfig));
 
   app.useGlobalPipes(
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
